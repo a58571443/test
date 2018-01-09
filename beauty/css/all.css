@@ -1,0 +1,354 @@
+﻿@charset "utf-8";
+
+html {
+    font-size: 20px;
+}
+/* @media only screen and (min-width: 360px) {
+    html {
+        font-size: 22.5px !important;
+    }
+}
+@media only screen and (min-width: 393px) {
+    html {
+        font-size: 24.56px !important;
+    }
+}
+@media only screen and (min-width: 401px) {
+    html {
+        font-size: 25px !important;
+    }
+}
+@media only screen and (min-width: 428px) {
+    html {
+        font-size: 26.75px !important;
+    }
+}
+@media only screen and (min-width: 481px) {
+    html {
+        font-size: 30px !important; 
+    }
+}
+@media only screen and (min-width: 569px) {
+    html {
+        font-size: 35px !important; 
+    }
+}
+@media only screen and (min-width: 641px) {
+    html {
+        font-size: 40px !important; 
+    }
+}
+@media only screen and (min-width: 720px) {
+    html {
+        font-size: 45px !important; 
+    }
+} */
+* {
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    user-select:none;
+}
+body {
+    color: #333;
+    background-color: #f4f5f9;
+}
+.wrap {
+    width: 100%;
+}
+/* 清除浮动 */
+.clear {
+    clear: both;
+    overflow: hidden;
+    height: 0;
+}
+.clearfix {
+    display: block;
+    zoom: 1;
+}
+.clearfix:after {
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+*html .clearfix {
+    height: 1%;
+    zoom: 1;
+}
+a {
+    color: #666;
+    text-decoration: none;
+}
+
+html,body {
+    width:100%;
+    height:100%;
+}
+.hide {
+    display: none;
+}
+.over {
+    overflow: hidden;
+}
+.flex {
+  display: box;           /* OLD - Android 4.4- */
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  
+}
+.flex-one {
+    flex:1;
+    box-flex:1;
+    -webkit-box:1;
+    -webkit-flex:1;
+}
+/* ==============================tab切换开始===================================== */
+.tab {
+    width: 100%;
+}
+.tab-title {
+    width: 100%;
+    height: 2rem;
+    background-color: #fff;
+}
+.tab-title ul {
+    width: 100%;
+    height: 2rem;
+    display: -webkit-box;
+    display:-moz-box;
+    display:box;
+}
+.tab-title .head-item {
+    display:block;
+    font-size:0.67rem;
+    color:#666;
+    line-height:2rem;
+    text-align: center;
+    -webkit-box-flex: 1;
+    -moz-box-flex:1;
+    box-flex:1;
+}
+/*===============================tab切换结束====================================  */
+/*===============================轮播开始=======================================  */
+.slider {
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+    background:#F4F5F9;
+}
+.slider ul {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+.slider ul li {
+    position: relative;
+    float: left;
+    overflow: hidden;
+    width: 100%;
+}
+/*===============================轮播结束=========================================  */
+/*===============================toast样式开始====================================  */
+.toast {
+    position: fixed;
+    padding: 0.2rem;
+    z-index: 99;
+    max-width: 90%;
+    background-color: #999;
+    color: #fff;
+    font-size: 0.7rem;
+    line-height: 1.1rem;
+    border-radius: 5px;
+}
+/*===============================toast样式结束====================================  */
+/*===============================下拉加载样式开始====================================  */
+.pullDown,
+.pullUp {
+    font-family: Arial, Microsoft YaHei;
+    font-size: 0.62rem;
+    line-height: 1rem !important;
+    text-align: center;
+    color: #888;
+} 
+.pullDown {
+    height: 3.42rem;
+}
+.pullUp {
+    height:3rem;
+}
+.pullDown .loader {
+    width:100%;
+    height:2.42rem;
+    background:url('../images/common/loading.png') no-repeat center 0.22rem;
+    background-size: 2.16rem;
+}
+.loader {
+    font-size: 0;
+    display: inline-block;
+    display: none;
+    padding: 0;
+}
+.pullDownImg {
+    width:100%;
+    height:2.42rem;
+    background:url('../images/common/pic-refresh.png') no-repeat center 0.22rem;
+    background-size: 2.08rem 2.16rem;
+}
+.pullDownLabel {
+    font-size:0.62rem;
+}
+.pullUpLabel {
+    font-size:0.62rem;
+    line-height:2rem;
+}
+.loader span {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin: 0 2px;
+    -webkit-animation: loader .8s linear infinite alternate;
+            animation: loader .8s linear infinite alternate;
+    vertical-align: middle;
+    border-radius: 100%;
+}
+.loader span:nth-child(1) {
+    -webkit-animation-delay: -1s;
+            animation-delay: -1s;
+
+    background: rgba(245, 103, 115,.6);
+}
+.loader span:nth-child(2) {
+    -webkit-animation-delay: -.8s;
+            animation-delay: -.8s;
+
+    background: rgba(245, 103, 115,.8);
+}
+.loader span:nth-child(3) {
+    -webkit-animation-delay: -.26666s;
+            animation-delay: -.26666s;
+
+    background: rgba(245, 103, 115,1);
+}
+.loader span:nth-child(4) {
+    -webkit-animation-delay: -.8s;
+            animation-delay: -.8s;
+
+    background: rgba(245, 103, 115,.8);
+}
+.loader span:nth-child(5) {
+    -webkit-animation-delay: -1s;
+            animation-delay: -1s;
+
+    background: rgba(245, 103, 115,.4);
+}
+@keyframes loader {
+    from {
+        transform: scale(0, 0);
+    }
+    to {
+        transform: scale(1, 1);
+    }
+}
+@-webkit-keyframes loader {
+    from {
+        -webkit-transform: scale(0, 0);
+    }
+    to {
+        -webkit-transform: scale(1, 1);
+    }
+}
+.swing{
+    -webkit-animation:swinging 1s ease 0.1s infinite;
+    animation:swinging swinging 10s ease 0.1s infinite;
+    -webkit-transform-origin:50% 0;
+    transform-origin:50% 0;
+}
+@keyframes swinging{
+     0% { -webkit-transform: rotate(0)  translateX(0); }
+    5% { -webkit-transform: rotate(-1deg) translateX(-0.125rem); }
+    10% { -webkit-transform: rotate(-2deg) translateX(-0.25rem); }
+    15% { -webkit-transform: rotate(-3deg) translateX(-0.325rem); }
+    20% { -webkit-transform: rotate(-4deg) translateX(-0.5rem); }
+    25% { -webkit-transform: rotate(-5deg) translateX(-0.725rem); }
+    30% { -webkit-transform: rotate(-4deg) translateX(-0.5rem); }
+    35% { -webkit-transform: rotate(-3deg) translateX(-0.325rem); }
+    40% { -webkit-transform: rotate(-2deg) translateX(-0.25rem); }
+    45% { -webkit-transform: rotate(-1deg) translateX(-0.125rem); }
+    50% { -webkit-transform: rotate(0deg) translateX(0rem); } 
+    55% { -webkit-transform: rotate(1deg) translateX(0.125rem); } 
+    60% { -webkit-transform: rotate(2deg) translateX(0.25rem); } 
+    65% { -webkit-transform: rotate(3deg) translateX(0.325rem); } 
+    70% { -webkit-transform: rotate(4deg) translateX(0.5rem); } 
+    75% { -webkit-transform: rotate(5deg) translateX(0.725rem); } 
+    80% { -webkit-transform: rotate(4deg) translateX(0.5rem); } 
+    85% { -webkit-transform: rotate(3deg) translateX(0.325rem); }
+    90% { -webkit-transform: rotate(2deg) translateX(0.25rem); } 
+    95% { -webkit-transform: rotate(1deg) translateX(0.125rem); } 
+    100% { -webkit-transform: rotate(0) translateX(0rem); } 
+}
+@-webkit-keyframes swinging{
+     0% { -webkit-transform: rotate(0)  translateX(0); }
+    5% { -webkit-transform: rotate(-1deg) translateX(-0.125rem); }
+    10% { -webkit-transform: rotate(-2deg) translateX(-0.25rem); }
+    15% { -webkit-transform: rotate(-3deg) translateX(-0.325rem); }
+    20% { -webkit-transform: rotate(-4deg) translateX(-0.5rem); }
+    25% { -webkit-transform: rotate(-5deg) translateX(-0.725rem); }
+    30% { -webkit-transform: rotate(-4deg) translateX(-0.5rem); }
+    35% { -webkit-transform: rotate(-3deg) translateX(-0.325rem); }
+    40% { -webkit-transform: rotate(-2deg) translateX(-0.25rem); }
+    45% { -webkit-transform: rotate(-1deg) translateX(-0.125rem); }
+    50% { -webkit-transform: rotate(0deg) translateX(0rem); } 
+    55% { -webkit-transform: rotate(1deg) translateX(0.125rem); } 
+    60% { -webkit-transform: rotate(2deg) translateX(0.25rem); } 
+    65% { -webkit-transform: rotate(3deg) translateX(0.325rem); } 
+    70% { -webkit-transform: rotate(4deg) translateX(0.5rem); } 
+    75% { -webkit-transform: rotate(5deg) translateX(0.725rem); } 
+    80% { -webkit-transform: rotate(4deg) translateX(0.5rem); } 
+    85% { -webkit-transform: rotate(3deg) translateX(0.325rem); }
+    90% { -webkit-transform: rotate(2deg) translateX(0.25rem); } 
+    95% { -webkit-transform: rotate(1deg) translateX(0.125rem); } 
+    100% { -webkit-transform: rotate(0) translateX(0rem); } 
+}
+/*===============================下拉加载样式结束====================================  */
+.no-imformation {
+    font-family: Arial, Microsoft YaHei;
+    font-size: 0.6rem;
+    line-height: 1rem !important;
+    height: 2rem;
+    text-align: center;
+    color: #888;
+}
+.no-imformation-label {
+    line-height: 2rem;
+}
+/*===============================点击过后追加样式start==================================  */
+.after-click {
+    color: #969696 !important;
+}
+/*===============================点击过后追加样式end====================================  */
+/*===============================列表暂无数据样式start==================================  */
+.no-data {
+    height:100%;
+}
+.empty {
+    height:100%;
+    background:#fff;
+}
+.empty-ad {
+    height:11.58rem;
+    background:url('../images/common/pic-nodata.png') no-repeat 54.54% 4.78rem;
+    background-size: 7.23rem 6.8rem;
+}
+.empty p{
+    font-size:0.67rem;
+    color:#000;
+    text-align:center;
+    line-height:3.2rem;
+}
+/*===============================列表暂无数据样式end====================================  */

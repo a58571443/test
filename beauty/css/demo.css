@@ -1,0 +1,112 @@
+.home-wrap {
+  width: 100%;
+  height: 100%;
+  background: #f1f1f1 !important;
+}
+
+.picture-detail {
+  background: #fff;
+  margin-top: .5rem;
+  padding: .3rem .5rem;
+}
+
+.info-header h2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* height: 18px; */
+  font-size: .8rem;
+  /* line-height: 18px; */
+}
+
+.update-time {
+  font-size: .5rem;
+  color: #999;
+  margin-top: .2rem;
+}
+
+.pic-holder {
+  margin-top: .3rem;
+}
+
+.pic-holder img {
+  width: 100%;
+}
+
+.pager {
+  text-align: center;
+  margin: .5rem;
+}
+
+.preview-page, .next-page, .currentPage {
+  font-size: .67rem;
+  text-align: center;
+  color: #666;
+  display: inline-block;
+  padding: 8px 16px 7px 16px;
+  border-bottom: 1px solid #D4D4D4;
+  background: #EEE;
+  border: 0;
+  outline: 0;
+  line-height: 1.2rem;
+}
+
+.companyInfo {
+  border-top: 1px solid #ff88af;
+  padding: 5px 0 18px;
+  background: #fc5677;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.site {
+  margin-top: .3rem;
+  font-size: 1rem;
+  font-weight: normal
+}
+
+.companyInfo p {
+  color: #fff;
+  line-height: 1.2rem;
+}
+
+.legalInfo {
+  font-weight: 100;
+  font-size: .67rem;
+}
+
+.recommend {
+  margin-top: .5rem;
+  background: #fff;
+  padding: 0 .5rem;
+}
+
+.recommend h2:before {
+  content: '';
+  color: #1a1a1a;
+  padding-left: 8px;
+  height: .9rem;
+  width: .1rem;
+  background: #cc0000;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: .2rem;
+}
+
+.recommend h2 {
+  font-size: .8rem;
+  padding-top: .5rem;
+}
+
+.recommend ul {
+  padding-bottom: 1rem;
+}
+
+.recommend ul li {
+  height: 1.1rem;
+}
+
+.recommend ul li a {
+  font-size: .6rem;
+  line-height: 1.2rem;
+  color: #fc5677;
+}

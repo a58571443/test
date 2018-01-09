@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 添加到主屏幕后，全屏显示 -->
+    <meta name="apple-touch-fullscreen" content="YES" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- iphone 运行在全屏模式 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="viewport"/>
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../css/base.css" />
+    <link rel="stylesheet" type="text/css" href="../css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../css/speech-helper.css" />
+</head>
+<body class="speech-helper tc">
+    <div class="speech-helper-title f16">请问需要什么帮助？</div>
+    <div class="speech-helper-tip">我是您的语音助手，想找什么服务直接问我…</div>
+    <div class="speech-helper-tip">试试问我:</div>
+    <div class="service-demo-w">
+        <div class="clearfix">
+            <span class="l1">活动</span>
+            <span class="l2">话题</span>
+            <span class="l3">促销</span>
+            <span class="l4">社保查询</span>
+        </div>
+        <div class="clearfix">
+            <span class="l5">我要办事</span>
+            <span class="l6">新闻</span>
+            <span class="l7">团购</span>
+            <span class="l8">优惠</span>
+        </div>
+        <div class="clearfix">
+            <span class="l9">资讯</span>
+            <span class="l10">购物</span>
+            <span class="l11">违章查询</span>
+            <span class="l12">家政服务</span>
+        </div>
+        <div class="clearfix">
+            <span class="l13">周边</span>
+            <span class="l14">我要出行</span>
+            <span class="l15">通知</span>
+            <span class="l16">商家</span>
+        </div>
+        <div class="clearfix">
+            <span class="l17">美食</span>
+            <span class="l18">公益服务</span>
+        </div>
+        <div class="clearfix">
+            <span class="l19">党员</span>
+        </div>
+        <div class="clearfix">
+            <span class="l20">圈子</span>
+        </div>
+        <div class="clearfix">
+            <span class="l21">学区</span>
+        </div>
+    </div>
+    <!-- <video src="http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8"
+height="300" width="400"
+></video> -->
+    <div class="download">
+        <svg>
+            <image xlink:href="../images/common/download.png" x="0" y="0" height="1.11rem" width="1.11rem"/>
+            <circle cx="50" cy="50" r="25" stroke-width="1" stroke="#CECECE" fill="none"></circle>
+            <circle id="c1" cx="50" cy="50" r="25" stroke-width="3" stroke="#49C887" fill="none" transform="matrix(0,-1,1,0,0,100)" stroke-dasharray=""></circle>
+        </svg>
+        <video id="myVideo" controls="controls" src="http://192.168.58.134:8888/group1/M00/1B/AD/wKg6hliZK_-ALzfMAE23KBbQ5JI201.mp4"></video>
+    </div>
+
+</body>
+    <script id="list" type="text/x-dot-template">
+            <span class="l1">{{=it[0].name}}</span>
+            <span class="l2">{{=it[1].name}}</span>
+            <span class="l3">{{=it[2].name}}</span>
+            <span class="l4">{{=it[3].name}}</span>
+            <span class="l5">{{=it[4].name}}</span>
+            <span class="l6">{{=it[5].name}}</span>
+            <span class="l7">{{=it[6].name}}</span>
+            <span class="l8">{{=it[7].name}}</span>
+            <span class="l9">{{=it[8].name}}</span>
+            <span class="l10">{{=it[9].name}}</span>
+            <span class="l11">{{=it[10].name}}</span>
+            <span class="l12">{{=it[11].name}}</span>
+            <span class="l13">{{=it[12].name}}</span>
+            <span class="l14">{{=it[13].name}}</span>
+            <span class="l15">{{=it[14].name}}</span>
+            <span class="l16">{{=it[15].name}}</span>
+            <span class="l17">{{=it[16].name}}</span>
+            <span class="l18">{{=it[17].name}}</span>
+            <span class="l19">{{=it[18].name}}</span>
+            <span class="l20">{{=it[19].name}}</span>
+            <span class="l21">{{=it[20].name}}</span>>
+    </script>
+
+    <script src="../js/lib/config.js"></script>
+    <script data-main="../js/app/helper" src="../js/lib/require.js"></script>
+</html>
