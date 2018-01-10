@@ -25,10 +25,10 @@
   <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
     <el-table-column type="selection" width="55">
     </el-table-column>
-    <el-table-column prop="id" label="id" sortable>
+    <!--<el-table-column prop="id" label="id" sortable>
     </el-table-column>
     <el-table-column prop="category_id" label="类别id" sortable>
-    </el-table-column>
+    </el-table-column>-->
     <el-table-column prop="status" label="状态" :formatter="formatStatus" sortable>
     </el-table-column>
     <el-table-column prop="title" label="标题" sortable>
@@ -40,8 +40,8 @@
          <el-input v-model="scope.row.rank"  placeholder="请输入内容" @blur="handleEditRank($event,scope.$index, scope.row)"></el-input>
      </template>
     </el-table-column>
-    <el-table-column prop="icon_id" label="icon_id" sortable>
-    </el-table-column>
+    <!--<el-table-column prop="icon_id" label="icon_id" sortable>
+    </el-table-column>-->
     <!--<el-table-column prop="create_time" label="创建时间" sortable>
     </el-table-column>
     <el-table-column prop="modified_time" label="修改时间" sortable>
@@ -60,9 +60,11 @@
     </el-table-column>
     <el-table-column label="操作" width="200px">
       <template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑帖子</el-button>
 					<el-button type="primary" size="small" @click="handleJudge(scope.$index, scope.row)">审核</el-button>
           <!--<el-button type="warning" size="small" @click="handleCategory(scope.$index, scope.row)">编辑帖子类别</el-button>-->
+          <el-button type="warning" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑帖子关键字</el-button>
+          <el-button type="warning" size="small" @click="handleImg(scope.$index, scope.row)">编辑帖子图片</el-button>
 				</template>
     </el-table-column>
   </el-table>
@@ -134,6 +136,65 @@
       <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
     </div>
   </el-dialog>
+
+  <!--编辑帖子关键字-->
+  <el-dialog title="编辑" v-model="keywordFormVisible" :close-on-click-modal="false">
+    <el-form :model="keywordForm" label-width="80px" :rules="keywordFormRules" ref="keywordForm">
+      <template slot-scope="scope">
+         <ul v-model="keyword" v-for="(item,index) in keyword">
+            <li>
+              <p>{{item.name}}</p>
+              <el-button @click="delKeyword(item.id,scope.$index, scope.row)">删除</el-button>
+            </li>
+         </ul>
+     </template>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click.native="keywordClose">确定</el-button>
+      <el-button type="primary" @click.native="addKeywordShow">添加关键字</el-button>
+    </div>
+  </el-dialog>
+
+  <!--新增关键字-->
+  <el-dialog title="新增关键字" v-model="addKeywordFormVisible" :close-on-click-modal="false">
+    <el-form :model="addKeywordForm" label-width="80px" :rules="addKeywordFormRules" ref="addKeywordForm">
+      <el-form-item label="关键字" prop="keyword">
+        <template slot-scope="scope">
+  					 <el-select v-model="addKeywordForm.keywords" placeholder="请选择" @change="selectGet">
+  				    <el-option
+  				      v-for="item in keywords"
+  				      :key="item.value"
+  				      :label="item.name"
+  				      :value="item.id">
+  				    </el-option>
+  				  </el-select>
+         </template>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click.native="addKeywordFormVisible = false">取消</el-button>
+      <el-button type="primary" @click.native="handleAddKeyword">提交</el-button>
+    </div>
+  </el-dialog>
+
+  <!--编辑帖子图片-->
+  <el-dialog title="编辑" v-model="imgsFormVisible" :close-on-click-modal="false">
+    <el-form :model="imgsForm" label-width="80px" :rules="imgsFormRules" ref="imgsForm">
+      <template slot-scope="scope">
+         <ul v-model="imgs" v-for="(item,index) in imgs">
+            <li>
+              <img :src="item.url">
+              <el-button @click="delImgs(item.id,scope.$index, scope.row)">删除</el-button>
+            </li>
+         </ul>
+     </template>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click.native="imgsClose">确定</el-button>
+      <el-button type="primary" @click.native="addImgShow">添加图片</el-button>
+    </div>
+  </el-dialog>
+
 </section>
 </template>
 
@@ -149,7 +210,12 @@ import {
   editPost,
   addPost,
   categoryPost,
-  updateRank
+  updateRank,
+  delKeywords,
+  addKeywords,
+  getkeywordList,
+  deleteImg,
+  addImg
 } from '../../api/api';
 
 export default {
@@ -159,12 +225,32 @@ export default {
         key: '',
         categoryId: '',
       },
+      imgs: [{
+        id: '3',
+        url: 'http://cdn.aiclicash.com/uploads/a540f8a6a86d206348f568856c6878ff_1508259_225_150.png'
+      }, {
+        id: '4',
+        url: 'http://cdn.aiclicash.com/uploads/2b755c6d5cd3cf7fc141dca333043c94_1508089_225_150.png'
+      }],
+      keywords: [],
+      keyword: [{
+        id: '3',
+        name: '关键字1'
+      }, {
+        id: '4',
+        name: '关键字2'
+      }, {
+        id: '5',
+        name: '关键字3'
+      }],
       flag: false,
+      label: '',
       flag1: false,
       options: [],
       users: [],
       total: 0,
       page: 1,
+      rowData: '',
       listLoading: false,
       sels: [], //列表选中列
       radio: '0',
@@ -188,10 +274,14 @@ export default {
         id: 0,
         status: ''
       },
+      addimgsFormVisible: false,
+      imgsFormVisible: false,
+      keywordFormVisible: false,
       categoryFormVisible: false,
       judgeFormVisible: false,
       addFormVisible: false, //新增界面是否显示
       addLoading: false,
+      addKeywordFormVisible: false,
       addFormRules: {
         name: [{
           required: true,
@@ -208,6 +298,18 @@ export default {
         id: '',
         categoryId: '',
         category_name: ''
+      },
+      keywordForm: {
+        id: '',
+        keyword: ''
+      },
+      imgsForm: {
+        id: '',
+        imageId: ''
+      },
+      addKeywordForm: {
+        id: '',
+        keywordId: ''
       }
     }
   },
@@ -243,11 +345,24 @@ export default {
       this.page = val;
       this.getUsers();
     },
+    selectGet(val) {
+      let obj = {};
+      obj = this.keywords.find((item) => {
+        return item.id === val;
+      });
+      this.label = obj.name;
+    },
     getList() {
       getUserListPage().then((res) => {
         //this.total = res.data.total;
         this.options = res.data.message;
         this.listLoading = false;
+        //NProgress.done();
+      });
+      getkeywordList().then((res) => {
+        //this.total = res.data.total;
+        this.keywords = res.data.message;
+        // this.listLoading = false;
         //NProgress.done();
       });
     },
@@ -287,8 +402,31 @@ export default {
         // this.getUsers();
       });
     },
+    handleAddKeyword: function() {
+      let para = Object.assign({}, this.addKeywordForm);
+      let name = this.label;
+      let res = {
+        id: para.id,
+        keywordId: para.keywords,
+        name: name
+      };
+      let obj = {
+        id: para.keywords,
+        name: name
+      }
+
+      addKeywords(res).then((res) => {
+        this.addKeywordFormVisible = false;
+        this.keyword.push(obj);
+        //NProgress.done();
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        // this.getUsers();
+      });
+    },
     handleEditRank: function(e, index, row) {
-      console.log('!'+e.target.value);
       let para = {};
       para.id = row.id;
       para.rank = e.target.value;
@@ -300,6 +438,64 @@ export default {
         });
         // this.getUsers();
       });
+    },
+    delImgs: function(val) {
+      this.$confirm('确认删除该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        let para = {
+          id: this.imgsForm.id,
+          imageId: val
+        };
+        deleteImg(para).then((res) => {
+          var arr = this.imgs;
+          for (var i in arr) {
+            if (arr[i].id == para.imageId) {
+              arr.splice(i, 1);
+            }
+          }
+          //NProgress.done();
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+        });
+      }).catch(() => {
+
+      });
+    },
+    delKeyword: function(val) {
+      this.$confirm('确认删除该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        let para = {
+          id: this.keywordForm.id,
+          keywordId: val
+        };
+        delKeywords(para).then((res) => {
+          var arr = this.keyword;
+          for (var i in arr) {
+            if (arr[i].id == para.keywordId) {
+              arr.splice(i, 1);
+            }
+          }
+          //NProgress.done();
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+        });
+      }).catch(() => {
+
+      });
+    },
+    keywordClose: function() {
+      this.keywordFormVisible = false;
+      this.getUsers();
+    },
+    imgsClose: function() {
+      this.imgsFormVisible = false;
+      this.getUsers();
     },
     //删除
     handleDel: function(index, row) {
@@ -337,12 +533,34 @@ export default {
 
       };
     },
+    addKeywordShow: function() {
+      this.addKeywordFormVisible = true;
+    },
+    addImgShow: function() {
+      this.addimgsFormVisible = true;
+    },
     handleCategory: function(index, row) {
       console.log(row);
       this.categoryFormVisible = true;
       this.categoryForm.id = Object.assign({}, row).id;
       this.categoryForm.category_name = Object.assign({}, row).category_name;
       this.categoryForm.categoryId = Object.assign({}, row).category_id;
+    },
+    handleKeyword: function(index, row) {
+      this.keywordFormVisible = true;
+      // this.keywordForm.keyword = this.keyword;
+
+      // this.keyword = row.keyword;
+      this.keywordForm.id = row.id;
+      this.addKeywordForm = row;
+    },
+    handleImg: function(index, row) {
+      this.imgsFormVisible = true;
+      // this.keywordForm.keyword = this.keyword;
+
+      // this.keyword = row.keyword;
+      this.imgsForm.id = row.id;
+      // this.addKeywordForm = row;
     },
     handleJudge: function(index, row) {
       console.log(row);

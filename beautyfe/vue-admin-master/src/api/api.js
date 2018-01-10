@@ -33,3 +33,21 @@ export const judgePost = params => { return axios.post(`${base}/posts/updateStat
 export const categoryPost = params => { return axios.post(`${base}/posts/updateCategory`, params).then(res => res.data); };
 //修改帖子权重
 export const updateRank = params => { return axios.post(`${base}/posts/updateRank`, params).then(res => res.data); };
+//删除帖子关键字
+export const delKeywords = params => { return axios.post(`${base}/posts/delKeyword`, params).then(res => res.data); };
+//添加帖子关键字
+export const addKeywords = params => { return axios.post(`${base}/posts/addKeyword`, params).then(res => res.data); };
+
+
+//删除帖子图片
+export const deleteImg = params => { return axios.post(`${base}/posts/delImage`, params).then(res => res.data); };
+//添加帖子图片
+export const addImg = params => { return axios.post(`${base}/posts/addImage`, params).then(res => res.data); };
+
+
+//图片列表
+export const getImageList = params => { return axios.get(`${base}/image/list`, { params: params }); };
+//修改图片类别
+export const updateImgCat = params =>{ return axios.post(`${base}/image/updateCategory`, params).then(res => res.data); };
+//图片审核
+export const judgeImg = params => { return axios.post(`${base}/image/updateStatus`, params).then(res => res.data); };
