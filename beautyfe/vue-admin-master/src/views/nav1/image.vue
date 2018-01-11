@@ -37,7 +37,7 @@
     </el-table-column>
     <el-table-column prop="type" label="类别" sortable>
       <template slot-scope="scope">
-					 <el-select v-model="scope.row.category_name" placeholder="请选择" @change="handleEditCategory($event,scope.$index, scope.row)">
+					 <el-select v-model="scope.row.category_name" placeholder="请选择" @visible-change="isVisible($event)" @change="handleEditCategory($event,scope.$index, scope.row)">
 				    <el-option
 				      v-for="item in options"
 				      :key="item.value"
@@ -51,9 +51,9 @@
     </el-table-column>
     <el-table-column label="操作">
       <template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
           <el-button type="primary" size="small" @click="handleJudge(scope.$index, scope.row)">审核</el-button>
-					<!-- <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button> -->
+					<el-button type="danger" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑帖子关键字</el-button>
 				</template>
     </el-table-column>
   </el-table>
@@ -110,6 +110,46 @@
     </div>
   </el-dialog>
 
+  <!--编辑帖子关键字-->
+  <el-dialog title="编辑" v-model="keywordFormVisible" :close-on-click-modal="false">
+    <el-form :model="keywordForm" label-width="80px" :rules="keywordFormRules" ref="keywordForm">
+      <template slot-scope="scope">
+         <ul v-model="keyword" v-for="(item,index) in keyword">
+            <li>
+              <p>{{item.name}}</p>
+              <el-button @click="delKeyword(item.id,scope.$index, scope.row)">删除</el-button>
+            </li>
+         </ul>
+     </template>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click.native="keywordClose">确定</el-button>
+      <el-button type="primary" @click.native="addKeywordShow">添加关键字</el-button>
+    </div>
+  </el-dialog>
+
+  <!--新增关键字-->
+  <el-dialog title="新增关键字" v-model="addKeywordFormVisible" :close-on-click-modal="false">
+    <el-form :model="addKeywordForm" label-width="80px" :rules="addKeywordFormRules" ref="addKeywordForm">
+      <el-form-item label="关键字" prop="keyword">
+        <template slot-scope="scope">
+             <el-select v-model="addKeywordForm.keywords" placeholder="请选择" @change="selectGet">
+              <el-option
+                v-for="item in keywords"
+                :key="item.value"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+         </template>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click.native="addKeywordFormVisible = false">取消</el-button>
+      <el-button type="primary" @click.native="handleAddKeyword">提交</el-button>
+    </div>
+  </el-dialog>
+
 </section>
 </template>
 
@@ -121,6 +161,9 @@ import {
   getUserListPage,
   updateImgCat,
   judgeImg,
+  delImgKeywords,
+  getkeywordList,
+  addImgKeywords,
   editUser,
   addUser
 } from '../../api/api';
@@ -132,13 +175,27 @@ export default {
         key: '',
         categoryId: '',
       },
+      keywords: [],
+      keyword: [{
+        id: '3',
+        name: '关键字1'
+      }, {
+        id: '4',
+        name: '关键字2'
+      }, {
+        id: '5',
+        name: '关键字3'
+      }],
       flag: false,
+      label: '',
+      keywordFormVisible: false,
+      addKeywordFormVisible: false,
       fileList: [],
       options: [],
       users: [],
       total: 0,
       page: 1,
-      judgeFormVisible:false,
+      judgeFormVisible: false,
       listLoading: false,
       sels: [], //列表选中列
 
@@ -172,8 +229,15 @@ export default {
       //新增界面数据
       addForm: {
         name: ''
+      },
+      keywordForm: {
+        id: '',
+        keyword: ''
+      },
+      addKeywordForm: {
+        id: '',
+        keywordId: ''
       }
-
     }
   },
   methods: {
@@ -200,6 +264,14 @@ export default {
     handleCurrentChange(val) {
       this.page = val;
       this.getUsers();
+    },
+    handleKeyword: function(index, row) {
+      this.keywordFormVisible = true;
+      // this.keywordForm.keyword = this.keyword;
+
+      // this.keyword = row.keyword;
+      this.keywordForm.id = row.id;
+      this.addKeywordForm = row;
     },
     changeList(val) {
       this.filters.categoryId = val;
@@ -237,6 +309,13 @@ export default {
         //this.total = res.data.total;
         this.options = res.data.message;
         this.listLoading = false;
+        this.flag = false;
+        //NProgress.done();
+      });
+      getkeywordList().then((res) => {
+        //this.total = res.data.total;
+        this.keywords = res.data.message;
+        // this.listLoading = false;
         //NProgress.done();
       });
     },
@@ -246,10 +325,21 @@ export default {
       this.judgeForm.id = Object.assign({}, row).id;
       this.judgeForm.status = Object.assign({}, row).status;
     },
+    keywordClose: function() {
+      this.keywordFormVisible = false;
+      this.getUsers();
+    },
+    isVisible: function(val) {
+      if (!val) {
+        this.flag = false;
+      } else {
+        this.flag = true;
+      }
+    },
     handleEditCategory: function(val, index, row) {
       console.log(val);
       if (!this.flag) {
-        this.flag = true;
+        // this.flag = true;
         return;
       }
       let para = {};
@@ -257,12 +347,72 @@ export default {
       para.id = row.id;
       para.categoryId = val;
       updateImgCat(para).then((res) => {
+        this.flag = false;
         //NProgress.done();
         this.$message({
           message: '提交成功',
           type: 'success'
         });
         // this.getUsers();
+      });
+    },
+    addKeywordShow: function() {
+      this.addKeywordFormVisible = true;
+    },
+    selectGet(val) {
+      let obj = {};
+      obj = this.keywords.find((item) => {
+        return item.id === val;
+      });
+      this.label = obj.name;
+    },
+    handleAddKeyword: function() {
+      let para = Object.assign({}, this.addKeywordForm);
+      let name = this.label;
+      let res = {
+        id: para.id,
+        keywordId: para.keywords,
+        name: name
+      };
+      let obj = {
+        id: para.keywords,
+        name: name
+      }
+
+      addImgKeywords(res).then((res) => {
+        this.addKeywordFormVisible = false;
+        this.keyword.push(obj);
+        //NProgress.done();
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        // this.getUsers();
+      });
+    },
+    delKeyword: function(val) {
+      this.$confirm('确认删除该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        let para = {
+          id: this.keywordForm.id,
+          keywordId: val
+        };
+        delImgKeywords(para).then((res) => {
+          var arr = this.keyword;
+          for (var i in arr) {
+            if (arr[i].id == para.keywordId) {
+              arr.splice(i, 1);
+            }
+          }
+          //NProgress.done();
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+        });
+      }).catch(() => {
+
       });
     },
     //删除

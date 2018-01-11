@@ -51,3 +51,7 @@ export const getImageList = params => { return axios.get(`${base}/image/list`, {
 export const updateImgCat = params =>{ return axios.post(`${base}/image/updateCategory`, params).then(res => res.data); };
 //图片审核
 export const judgeImg = params => { return axios.post(`${base}/image/updateStatus`, params).then(res => res.data); };
+//删除图片关键字
+export const delImgKeywords = params => { return axios.post(`${base}/image/delKeyword`, params).then(res => res.data); };
+//添加图片关键字
+export const addImgKeywords = params => { return axios.post(`${base}/image/addKeyword`, params).then(res => res.data); };

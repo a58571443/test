@@ -48,7 +48,7 @@
     </el-table-column>-->
     <el-table-column prop="category_name" label="类别名称" sortable>
       <template slot-scope="scope">
-					 <el-select v-model="scope.row.category_name" placeholder="请选择" @change="handleEditCategory($event,scope.$index, scope.row)">
+					 <el-select v-model="scope.row.category_name" placeholder="请选择" @visible-change="isVisible($event)" @change="handleEditCategory($event,scope.$index, scope.row)">
 				    <el-option
 				      v-for="item in options"
 				      :key="item.value"
@@ -383,10 +383,17 @@ export default {
         //NProgress.done();
       });
     },
+    isVisible: function(val) {
+      if (!val) {
+        this.flag = false;
+      } else {
+        this.flag = true;
+      }
+    },
     handleEditCategory: function(val, index, row) {
       console.log(val);
       if (!this.flag) {
-        this.flag = true;
+        // this.flag = true;
         return;
       }
       let para = {};
