@@ -60,11 +60,11 @@
     </el-table-column>
     <el-table-column label="操作" width="200px">
       <template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑帖子</el-button>
-					<el-button type="primary" size="small" @click="handleJudge(scope.$index, scope.row)">审核</el-button>
+					<el-button class="td-btn" size="small" @click="handleEdit(scope.$index, scope.row)">编辑帖子</el-button>
+					<el-button class="td-btn" type="primary" size="small" @click="handleJudge(scope.$index, scope.row)">审核</el-button>
           <!--<el-button type="warning" size="small" @click="handleCategory(scope.$index, scope.row)">编辑帖子类别</el-button>-->
-          <el-button type="warning" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑帖子关键字</el-button>
-          <el-button type="warning" size="small" @click="handleImg(scope.$index, scope.row)">编辑帖子图片</el-button>
+          <el-button class="td-btn" type="warning" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑帖子关键字</el-button>
+          <el-button class="td-btn" type="success" size="small" @click="handleImg(scope.$index, scope.row)">编辑帖子图片</el-button>
 				</template>
     </el-table-column>
   </el-table>
@@ -181,9 +181,9 @@
   <el-dialog title="编辑" v-model="imgsFormVisible" :close-on-click-modal="false">
     <el-form :model="imgsForm" label-width="80px" :rules="imgsFormRules" ref="imgsForm">
       <template slot-scope="scope">
-         <ul v-model="imgs" v-for="(item,index) in imgs">
-            <li>
-              <img :src="item.url">
+         <ul class="img-ul">
+            <li class="img-li" v-model="imgs" v-for="(item,index) in imgs">
+              <img :src="item.ref_url">
               <el-button @click="delImgs(item.id,scope.$index, scope.row)">删除</el-button>
             </li>
          </ul>
@@ -225,24 +225,9 @@ export default {
         key: '',
         categoryId: '',
       },
-      imgs: [{
-        id: '3',
-        url: 'http://cdn.aiclicash.com/uploads/a540f8a6a86d206348f568856c6878ff_1508259_225_150.png'
-      }, {
-        id: '4',
-        url: 'http://cdn.aiclicash.com/uploads/2b755c6d5cd3cf7fc141dca333043c94_1508089_225_150.png'
-      }],
+      imgs: [],
       keywords: [],
-      keyword: [{
-        id: '3',
-        name: '关键字1'
-      }, {
-        id: '4',
-        name: '关键字2'
-      }, {
-        id: '5',
-        name: '关键字3'
-      }],
+      keyword: [],
       flag: false,
       label: '',
       flag1: false,
@@ -377,7 +362,7 @@ export default {
       //NProgress.start();
       getpostsList(para).then((res) => {
         this.flag = false;
-        this.total = res.data.total;
+        this.total = parseInt(res.data.message.total);
         this.users = res.data.message.data;
         this.listLoading = false;
         //NProgress.done();
@@ -400,7 +385,7 @@ export default {
       console.log(row);
       para.id = row.id;
       para.categoryId = val;
-      judgePost(para).then((res) => {
+      categoryPost(para).then((res) => {
         //NProgress.done();
         this.$message({
           message: '提交成功',
@@ -557,7 +542,9 @@ export default {
       this.keywordFormVisible = true;
       // this.keywordForm.keyword = this.keyword;
 
-      // this.keyword = row.keyword;
+      if (row.keyword.length) {
+        this.keyword = row.keyword;
+      }
       this.keywordForm.id = row.id;
       this.addKeywordForm = row;
     },
@@ -565,7 +552,7 @@ export default {
       this.imgsFormVisible = true;
       // this.keywordForm.keyword = this.keyword;
 
-      // this.keyword = row.keyword;
+      this.imgs = row.images;
       this.imgsForm.id = row.id;
       // this.addKeywordForm = row;
     },
@@ -694,5 +681,22 @@ export default {
 </script>
 
 <style scoped>
+  .btns {
+    text-align: center;
+  }
 
+  .td-btn {
+    margin: 0 auto;
+    margin-bottom: 5px;
+  }
+  .img-li {
+    display: inline-block;
+    width: 50%;
+  }
+  .img-li img {
+    width: 100%;
+  }
+  .img-ul {
+    font-size: 0;
+  }
 </style>

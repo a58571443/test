@@ -33,6 +33,11 @@
     </el-table-column>
     <el-table-column prop="name" label="图片名称" sortable>
     </el-table-column>
+    <el-table-column prop="ref_url" label="图片预览" sortable>
+      <template slot-scope="scope">
+        <img class="preview-img"  v-model="scope.row.ref_url" :src="scope.row.ref_url">
+       </template>
+    </el-table-column>
     <el-table-column prop="status" label="状态" :formatter="formatStatus" sortable>
     </el-table-column>
     <el-table-column prop="type" label="类别" sortable>
@@ -49,11 +54,14 @@
     </el-table-column>
     <el-table-column prop="create_time" label="创建时间" sortable>
     </el-table-column>
-    <el-table-column label="操作">
+    <el-table-column label="操作" class="td">
       <template scope="scope">
+          <div class="btns">
+            <el-button class="td-btn" type="primary" size="small" @click="handleJudge(scope.$index, scope.row)">审核</el-button>
+  					<el-button class="td-btn" type="danger" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑帖子关键字</el-button>
+          </div>
 					<!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
-          <el-button type="primary" size="small" @click="handleJudge(scope.$index, scope.row)">审核</el-button>
-					<el-button type="danger" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑帖子关键字</el-button>
+
 				</template>
     </el-table-column>
   </el-table>
@@ -176,16 +184,7 @@ export default {
         categoryId: '',
       },
       keywords: [],
-      keyword: [{
-        id: '3',
-        name: '关键字1'
-      }, {
-        id: '4',
-        name: '关键字2'
-      }, {
-        id: '5',
-        name: '关键字3'
-      }],
+      keyword: [],
       flag: false,
       label: '',
       keywordFormVisible: false,
@@ -268,8 +267,9 @@ export default {
     handleKeyword: function(index, row) {
       this.keywordFormVisible = true;
       // this.keywordForm.keyword = this.keyword;
-
-      // this.keyword = row.keyword;
+      if (row.keyword.length) {
+        this.keyword = row.keyword;
+      }
       this.keywordForm.id = row.id;
       this.addKeywordForm = row;
     },
@@ -292,7 +292,7 @@ export default {
       this.listLoading = true;
       //NProgress.start();
       getImageList(para).then((res) => {
-        this.total = res.data.total;
+        this.total = parseInt(res.data.message.total);
         this.users = res.data.message.data;
         this.listLoading = false;
         //NProgress.done();
@@ -551,5 +551,16 @@ export default {
 </script>
 
 <style scoped>
+.btns {
+  text-align: center;
+}
 
+.td-btn {
+  margin: 0 auto;
+  margin-bottom: 5px;
+}
+
+.preview-img {
+  width: 90px;
+}
 </style>
