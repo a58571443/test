@@ -5,9 +5,9 @@
 				{{collapsed?'':sysName}}
 			</el-col>
 			<el-col :span="10">
-				<div class="tools" @click.prevent="collapse">
+				<!--<div class="tools" @click.prevent="collapse">
 					<i class="fa fa-align-justify"></i>
-				</div>
+				</div>-->
 			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
@@ -23,7 +23,7 @@
 		<el-col :span="24" class="main">
 			<aside :class="collapsed?'menu-collapsed':'menu-expanded'">
 				<!--导航菜单-->
-				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
+				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" mode="horizontal" @open="handleopen" @close="handleclose" @select="handleselect"
 					 unique-opened router v-show="!collapsed">
 					<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 						<el-submenu :index="index+''" v-if="!item.leaf">
@@ -77,8 +77,8 @@
 			return {
 				sysName:'后台管理系统',
 				collapsed:false,
-				sysUserName: '',
-				sysUserAvatar: '',
+				sysUserName: '管理员',
+				sysUserAvatar: 'assets/head.jpg',
 				form: {
 					name: '',
 					region: '',
@@ -129,8 +129,8 @@
 			var user = sessionStorage.getItem('user');
 			if (user) {
 				user = JSON.parse(user);
-				this.sysUserName = user.name || '';
-				this.sysUserAvatar = user.avatar || '';
+				this.sysUserName = user.name || '管理员';
+				this.sysUserAvatar = user.avatar || 'assets/head.jpg';
 			}
 
 		}
@@ -200,15 +200,15 @@
 			}
 		}
 		.main {
-			display: flex;
+			// display: flex;
 			// background: #324057;
 			position: absolute;
 			top: 60px;
 			bottom: 0px;
-			overflow: hidden;
+			// overflow: hidden;
 			aside {
-				flex:0 0 230px;
-				width: 230px;
+				// flex:0 0 230px;
+				// width: 230px;
 				// position: absolute;
 				// top: 0px;
 				// bottom: 0px;
@@ -236,8 +236,8 @@
 				width: 60px;
 			}
 			.menu-expanded{
-				flex:0 0 230px;
-				width: 230px;
+				// flex:0 0 230px;
+				// width: 230px;
 			}
 			.content-container {
 				// background: #f1f2f7;

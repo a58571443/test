@@ -29,14 +29,23 @@
 
   <!--列表-->
   <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-    <el-table-column type="selection" width="55">
-    </el-table-column>
+    <!-- <el-table-column type="selection" width="55">
+    </el-table-column> -->
     <el-table-column prop="name" label="图片名称" sortable>
     </el-table-column>
     <el-table-column prop="ref_url" label="图片预览" sortable>
       <template slot-scope="scope">
-        <img class="preview-img"  v-model="scope.row.ref_url" :src="scope.row.ref_url">
+        <img class="preview-img"  v-model="scope.row.ref_url" :src="scope.row.ref_url" @click="preview(scope.row.ref_url)">
        </template>
+    </el-table-column>
+    <el-table-column prop="title" label="关键字" sortable>
+      <template slot-scope="scope">
+        <ul v-for="(item,index) in scope.row.keyword">
+           <li class="keyword-li">
+             <p>{{item.name}}</p>
+           </li>
+        </ul>
+     </template>
     </el-table-column>
     <el-table-column prop="status" label="状态" :formatter="formatStatus" sortable>
     </el-table-column>
@@ -58,7 +67,7 @@
       <template scope="scope">
           <div class="btns">
             <el-button class="td-btn" type="primary" size="small" @click="handleJudge(scope.$index, scope.row)">审核</el-button>
-  					<el-button class="td-btn" type="danger" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑帖子关键字</el-button>
+  					<el-button class="td-btn" type="danger" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑图片关键字</el-button>
           </div>
 					<!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
 
@@ -158,6 +167,14 @@
     </div>
   </el-dialog>
 
+  <!--预览图片-->
+  <el-dialog title="预览" v-model="previewVisible" :close-on-click-modal="false">
+    <img :src="previewUrl">
+    <div slot="footer" class="dialog-footer">
+      <el-button @click.native="previewVisible = false">取消</el-button>
+      <el-button type="primary" @click.native="previewVisible = false">确定</el-button>
+    </div>
+  </el-dialog>
 </section>
 </template>
 
@@ -187,8 +204,10 @@ export default {
       keyword: [],
       flag: false,
       label: '',
+      previewUrl: '',
       keywordFormVisible: false,
       addKeywordFormVisible: false,
+      previewVisible: false,
       fileList: [],
       options: [],
       users: [],
@@ -390,6 +409,10 @@ export default {
         // this.getUsers();
       });
     },
+    preview: function(val) {
+      this.previewVisible = true;
+      this.previewUrl = val;
+    },
     delKeyword: function(val) {
       this.$confirm('确认删除该记录吗?', '提示', {
         type: 'warning'
@@ -562,5 +585,11 @@ export default {
 
 .preview-img {
   width: 90px;
+}
+
+.keyword-li {
+  list-style: none;
+  float: left;
+  margin-right: 3px;
 }
 </style>

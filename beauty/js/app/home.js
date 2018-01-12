@@ -4,9 +4,10 @@ require([
     'doT',
     'swiper',
     'common',
-    'lazyLoad'
+    'lazyLoad',
+    'banner'
   ],
-  function(jquery, doT, swiper, common, lazyLoad) {
+  function(jquery, doT, swiper, common, lazyLoad, banner) {
     var type = common.getQueryString(location.href).type;
     var creatPage = {
       _getRequestData: {

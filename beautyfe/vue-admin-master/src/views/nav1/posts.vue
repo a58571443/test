@@ -23,15 +23,24 @@
 
   <!--列表-->
   <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-    <el-table-column type="selection" width="55">
+    <!--<<el-table-column type="selection" width="55">
     </el-table-column>
-    <!--<el-table-column prop="id" label="id" sortable>
+    el-table-column prop="id" label="id" sortable>
     </el-table-column>
     <el-table-column prop="category_id" label="类别id" sortable>
     </el-table-column>-->
     <el-table-column prop="status" label="状态" :formatter="formatStatus" sortable>
     </el-table-column>
     <el-table-column prop="title" label="标题" sortable>
+    </el-table-column>
+    <el-table-column prop="title" label="关键字" sortable>
+      <template slot-scope="scope">
+        <ul v-for="(item,index) in scope.row.keyword">
+           <li class="keyword-li">
+             <p>{{item.name}}</p>
+           </li>
+        </ul>
+     </template>
     </el-table-column>
     <el-table-column prop="description" label="描述" sortable>
     </el-table-column>
@@ -72,7 +81,7 @@
   <!--工具条-->
   <el-col :span="24" class="toolbar">
     <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-    <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+    <el-pagination layout="prev, pager, next" @current-change="handleImgCurrentChange" :page-size="20" :total="total" style="float:right;">
     </el-pagination>
   </el-col>
 
@@ -179,7 +188,7 @@
 
   <!--编辑帖子图片-->
   <el-dialog title="编辑" v-model="imgsFormVisible" :close-on-click-modal="false">
-    <el-form :model="imgsForm" label-width="80px" :rules="imgsFormRules" ref="imgsForm">
+    <!--<el-form :model="imgsForm" label-width="80px" :rules="imgsFormRules" ref="imgsForm">
       <template slot-scope="scope">
          <ul class="img-ul">
             <li class="img-li" v-model="imgs" v-for="(item,index) in imgs">
@@ -188,12 +197,57 @@
             </li>
          </ul>
      </template>
-    </el-form>
+   </el-form>-->
+    <el-table :data="imgs" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+      <el-table-column prop="name" label="图片名称" sortable>
+      </el-table-column>
+      <el-table-column prop="ref_url" label="图片预览" sortable>
+        <template slot-scope="scope">
+         <img class="preview-img"  v-model="scope.row.ref_url" :src="scope.row.ref_url" @click="preview(scope.row.ref_url)">
+        </template>
+      </el-table-column>
+      <el-table-column prop="title" label="关键字" sortable>
+        <template slot-scope="scope">
+         <ul v-for="(item,index) in scope.row.keyword">
+            <li class="keyword-li">
+              <p>{{item.name}}</p>
+            </li>
+         </ul>
+      </template>
+      </el-table-column>
+      <el-table-column prop="status" label="状态" :formatter="formatStatus" sortable>
+      </el-table-column>
+      <el-table-column label="操作" class="td">
+        <template scope="scope">
+           <div class="btns">
+             <el-button class="td-btn" type="primary" size="small" @click="delImgs(scope.$index, scope.row)">删除</el-button>
+           </div>
+ 					<!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+ 				</template>
+      </el-table-column>
+    </el-table>
+    <el-col :span="24" class="toolbar">
+      <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+      <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="imgTotal" style="float:right;">
+      </el-pagination>
+    </el-col>
     <div slot="footer" class="dialog-footer">
       <el-button @click.native="imgsClose">确定</el-button>
       <el-button type="primary" @click.native="addImgShow">添加图片</el-button>
     </div>
   </el-dialog>
+
+  <!--预览图片-->
+  <el-dialog title="预览" v-model="previewVisible" :close-on-click-modal="false">
+    <img :src="previewUrl">
+    <div slot="footer" class="dialog-footer">
+      <el-button @click.native="previewVisible = false">取消</el-button>
+      <el-button type="primary" @click.native="previewVisible = false">确定</el-button>
+    </div>
+  </el-dialog>
+</section>
+</template>
+
 
 </section>
 </template>
@@ -214,6 +268,7 @@ import {
   delKeywords,
   addKeywords,
   getkeywordList,
+  getPostImgs,
   deleteImg,
   addImg
 } from '../../api/api';
@@ -234,11 +289,15 @@ export default {
       options: [],
       users: [],
       total: 0,
+      imgTotal: 0,
       page: 1,
+      imgPage: 1,
       rowData: '',
       listLoading: false,
       sels: [], //列表选中列
       radio: '0',
+      previewVisible:false,
+      previewUrl:'',
       editFormVisible: false, //编辑界面是否显示
       editLoading: false,
       judgeLoading: false,
@@ -330,6 +389,10 @@ export default {
       this.page = val;
       this.getUsers();
     },
+    handleImgCurrentChange(val) {
+      this.imgPage = val;
+      this.getUsers();
+    },
     selectGet(val) {
       let obj = {};
       obj = this.keywords.find((item) => {
@@ -347,6 +410,18 @@ export default {
       getkeywordList().then((res) => {
         //this.total = res.data.total;
         this.keywords = res.data.message;
+        // this.listLoading = false;
+        //NProgress.done();
+      });
+    },
+    getListImg(val) {
+      let para = {
+        page: this.imgPage,
+        id: val
+      };
+      getPostImgs(para).then((res) => {
+        this.imgTotal = parseInt(res.data.message.total);
+        this.imgs = res.data.message.data;
         // this.listLoading = false;
         //NProgress.done();
       });
@@ -431,13 +506,13 @@ export default {
         // this.getUsers();
       });
     },
-    delImgs: function(val) {
+    delImgs: function(index, row) {
       this.$confirm('确认删除该记录吗?', '提示', {
         type: 'warning'
       }).then(() => {
         let para = {
           id: this.imgsForm.id,
-          imageId: val
+          imageId: row.id
         };
         deleteImg(para).then((res) => {
           var arr = this.imgs;
@@ -549,12 +624,17 @@ export default {
       this.addKeywordForm = row;
     },
     handleImg: function(index, row) {
+      this.getListImg(row.id);
       this.imgsFormVisible = true;
       // this.keywordForm.keyword = this.keyword;
 
-      this.imgs = row.images;
+      // this.imgs = row.images;
       this.imgsForm.id = row.id;
       // this.addKeywordForm = row;
+    },
+    preview: function(val) {
+      this.previewVisible = true;
+      this.previewUrl = val;
     },
     handleJudge: function(index, row) {
       console.log(row);
@@ -681,22 +761,34 @@ export default {
 </script>
 
 <style scoped>
-  .btns {
-    text-align: center;
-  }
+.btns {
+  text-align: center;
+}
 
-  .td-btn {
-    margin: 0 auto;
-    margin-bottom: 5px;
-  }
-  .img-li {
-    display: inline-block;
-    width: 50%;
-  }
-  .img-li img {
-    width: 100%;
-  }
-  .img-ul {
-    font-size: 0;
-  }
+.td-btn {
+  margin: 0 auto;
+  margin-bottom: 5px;
+}
+
+.img-li {
+  display: inline-block;
+  width: 50%;
+}
+
+.img-li img {
+  width: 100%;
+}
+
+.img-ul {
+  font-size: 0;
+}
+
+.keyword-li {
+  list-style: none;
+  float: left;
+  margin-right: 3px;
+}
+.preview-img {
+  width: 90px;
+}
 </style>

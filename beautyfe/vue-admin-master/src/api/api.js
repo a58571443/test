@@ -55,3 +55,5 @@ export const judgeImg = params => { return axios.post(`${base}/image/updateStatu
 export const delImgKeywords = params => { return axios.post(`${base}/image/delKeyword`, params).then(res => res.data); };
 //添加图片关键字
 export const addImgKeywords = params => { return axios.post(`${base}/image/addKeyword`, params).then(res => res.data); };
+//获取帖子图片列表
+export const getPostImgs = params => { return axios.get(`${base}/posts/images`, { params: params }); };
