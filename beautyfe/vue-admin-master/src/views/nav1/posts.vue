@@ -4,13 +4,19 @@
   <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
     <el-form :inline="true" :model="filters">
       <el-form-item>
-        <el-select v-model="filters.categoryId" placeholder="请选择" @change="changeList">
+        <el-select v-model="filters.categoryId" placeholder="请选择类别" @change="changeList">
           <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-input placeholder="关键字" v-model="filters.key"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model="filters.keywordId" placeholder="请选择关键字" @change="changeKeyword">
+          <el-option v-for="item in keywords" :key="item.value" :label="item.name" :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" v-on:click="getUsers">查询</el-button>
@@ -25,10 +31,11 @@
   <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
     <!--<<el-table-column type="selection" width="55">
     </el-table-column>
-    el-table-column prop="id" label="id" sortable>
-    </el-table-column>
+
     <el-table-column prop="category_id" label="类别id" sortable>
     </el-table-column>-->
+    <el-table-column prop="id" label="id" sortable>
+    </el-table-column>
     <el-table-column prop="status" label="状态" :formatter="formatStatus" sortable>
     </el-table-column>
     <el-table-column prop="title" label="标题" sortable>
@@ -49,12 +56,6 @@
          <el-input v-model="scope.row.rank"  placeholder="请输入内容" @blur="handleEditRank($event,scope.$index, scope.row)"></el-input>
      </template>
     </el-table-column>
-    <!--<el-table-column prop="icon_id" label="icon_id" sortable>
-    </el-table-column>-->
-    <!--<el-table-column prop="create_time" label="创建时间" sortable>
-    </el-table-column>
-    <el-table-column prop="modified_time" label="修改时间" sortable>
-    </el-table-column>-->
     <el-table-column prop="category_name" label="类别名称" sortable>
       <template slot-scope="scope">
 					 <el-select v-model="scope.row.category_name" placeholder="请选择" @visible-change="isVisible($event)" @change="handleEditCategory($event,scope.$index, scope.row)">
@@ -65,6 +66,11 @@
 				      :value="item.id">
 				    </el-option>
 				  </el-select>
+       </template>
+    </el-table-column>
+    <el-table-column prop="icon_image" label="封面图片" sortable>
+      <template slot-scope="scope">
+        <img class="preview-img"  v-if="scope.row.icon_image" v-model="scope.row.icon_image.ref_url" :src="scope.row.icon_image.ref_url" @click="preview(scope.row.icon_image.ref_url)">
        </template>
     </el-table-column>
     <el-table-column label="操作" width="200px">
@@ -80,8 +86,8 @@
 
   <!--工具条-->
   <el-col :span="24" class="toolbar">
-    <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-    <el-pagination layout="prev, pager, next" @current-change="handleImgCurrentChange" :page-size="20" :total="total" style="float:right;">
+    <!--  <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>-->
+    <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
     </el-pagination>
   </el-col>
 
@@ -188,16 +194,6 @@
 
   <!--编辑帖子图片-->
   <el-dialog title="编辑" v-model="imgsFormVisible" :close-on-click-modal="false">
-    <!--<el-form :model="imgsForm" label-width="80px" :rules="imgsFormRules" ref="imgsForm">
-      <template slot-scope="scope">
-         <ul class="img-ul">
-            <li class="img-li" v-model="imgs" v-for="(item,index) in imgs">
-              <img :src="item.ref_url">
-              <el-button @click="delImgs(item.id,scope.$index, scope.row)">删除</el-button>
-            </li>
-         </ul>
-     </template>
-   </el-form>-->
     <el-table :data="imgs" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
       <el-table-column prop="name" label="图片名称" sortable>
       </el-table-column>
@@ -221,14 +217,15 @@
         <template scope="scope">
            <div class="btns">
              <el-button class="td-btn" type="primary" size="small" @click="delImgs(scope.$index, scope.row)">删除</el-button>
+             <el-button size="small" @click="addMain(scope.$index, scope.row)">设为封面</el-button>
            </div>
  					<!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
  				</template>
       </el-table-column>
     </el-table>
     <el-col :span="24" class="toolbar">
-      <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-      <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="imgTotal" style="float:right;">
+      <!-- <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button> -->
+      <el-pagination layout="prev, pager, next" @current-change="handleImgCurrentChange" :page-size="20" :total="imgTotal" style="float:right;">
       </el-pagination>
     </el-col>
     <div slot="footer" class="dialog-footer">
@@ -243,6 +240,18 @@
     <div slot="footer" class="dialog-footer">
       <el-button @click.native="previewVisible = false">取消</el-button>
       <el-button type="primary" @click.native="previewVisible = false">确定</el-button>
+    </div>
+  </el-dialog>
+
+  <!--新增界面-->
+  <el-dialog title="新增" v-model="addImgVisible" :close-on-click-modal="false">
+    <el-upload class="upload-demo" action="//47.97.167.88/image/upload" :data="uploadData" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :on-success="fileSuccess" list-type="picture">
+      <el-button size="small" type="primary">点击上传</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click.native="addImgVisible = false">取消</el-button>
+      <el-button type="primary" @click.native="fileSubmit">确定</el-button>
     </div>
   </el-dialog>
 </section>
@@ -270,6 +279,7 @@ import {
   getkeywordList,
   getPostImgs,
   deleteImg,
+  addIcon,
   addImg
 } from '../../api/api';
 
@@ -279,11 +289,13 @@ export default {
       filters: {
         key: '',
         categoryId: '',
+        keywordId: ''
       },
       imgs: [],
       keywords: [],
       keyword: [],
       flag: false,
+      addImgVisible: false,
       label: '',
       flag1: false,
       options: [],
@@ -296,8 +308,8 @@ export default {
       listLoading: false,
       sels: [], //列表选中列
       radio: '0',
-      previewVisible:false,
-      previewUrl:'',
+      previewVisible: false,
+      previewUrl: '',
       editFormVisible: false, //编辑界面是否显示
       editLoading: false,
       judgeLoading: false,
@@ -326,6 +338,7 @@ export default {
       addFormVisible: false, //新增界面是否显示
       addLoading: false,
       addKeywordFormVisible: false,
+      imgCatId: '',
       addFormRules: {
         name: [{
           required: true,
@@ -354,6 +367,9 @@ export default {
       addKeywordForm: {
         id: '',
         keywordId: ''
+      },
+      uploadData: {
+        postsId: ''
       }
     }
   },
@@ -374,16 +390,15 @@ export default {
     },
     changeStatus(val) {
       this.judgeForm.status = val;
-      console.log(val);
     },
     changeCategory(val) {
       this.categoryForm.categoryId = val;
-      console.log(val);
     },
-
+    changeKeyword(val) {
+      this.filters.keywordId = val;
+    },
     changeList(val) {
       this.filters.categoryId = val;
-      console.log(val);
     },
     handleCurrentChange(val) {
       this.page = val;
@@ -391,7 +406,7 @@ export default {
     },
     handleImgCurrentChange(val) {
       this.imgPage = val;
-      this.getUsers();
+      this.getListImg(this.imgCatId);
     },
     selectGet(val) {
       let obj = {};
@@ -431,7 +446,8 @@ export default {
       let para = {
         page: this.page,
         categoryId: this.filters.categoryId,
-        key: this.filters.key
+        key: this.filters.key,
+        keywordId: this.filters.keywordId
       };
       this.listLoading = true;
       //NProgress.start();
@@ -505,6 +521,20 @@ export default {
         });
         // this.getUsers();
       });
+    },
+    addMain: function(index, row) {
+      let para = {
+        id: this.imgsForm.id,
+        imageId: row.id
+      };
+      addIcon(para).then((res) => {
+        //NProgress.done();
+        this.$message({
+          message: '设置成功',
+          type: 'success'
+        });
+      });
+
     },
     delImgs: function(index, row) {
       this.$confirm('确认删除该记录吗?', '提示', {
@@ -604,7 +634,7 @@ export default {
       this.addKeywordFormVisible = true;
     },
     addImgShow: function() {
-      this.addimgsFormVisible = true;
+      this.addImgVisible = true;
     },
     handleCategory: function(index, row) {
       console.log(row);
@@ -625,11 +655,13 @@ export default {
     },
     handleImg: function(index, row) {
       this.getListImg(row.id);
+      this.imgCatId = row.id;
       this.imgsFormVisible = true;
       // this.keywordForm.keyword = this.keyword;
 
       // this.imgs = row.images;
       this.imgsForm.id = row.id;
+      this.uploadData.postsId = row.id;
       // this.addKeywordForm = row;
     },
     preview: function(val) {
@@ -659,6 +691,11 @@ export default {
           this.getUsers();
         });
       });
+    },
+    fileSubmit(val) {
+      this.addImgVisible = false;
+      this.fileList = [];
+      this.getUsers();
     },
     judgeSubmit: function(index, row) {
       this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -788,6 +825,7 @@ export default {
   float: left;
   margin-right: 3px;
 }
+
 .preview-img {
   width: 90px;
 }

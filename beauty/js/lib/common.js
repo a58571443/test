@@ -4,8 +4,18 @@
  * @update:2015.11.16
  * @description 常用操作
  */
+var BASEURL = '//47.97.167.88:8080';
 define(function(require) {
   var common = {
+    ajax: function(val) {
+      $.ajax({
+        url: BASEURL + val.url,
+        dataType: 'json',
+        type: val.type,
+        data: val.data || '',
+        success: val.success || ''
+      });
+    },
     navSilde: function() {
       var type = common.getQueryString(location.href).type;
       if (type) {
@@ -27,11 +37,16 @@ define(function(require) {
       $('.list').click(function(e) {
         $('body').addClass('menu-active menu-activing');
         $('#slide-menu').addClass('db');
+        $('.blank').show();
+        $('body').addClass('oh');
         $('.menu-active #page').on('click', function() {
 
         })
       });
-      $(document).off('.view-window').on('click', '.view-window', function() {
+      $(document).off('.blank').on('touchend', '.blank', function(e) {
+        e.preventDefault();
+        $('.blank').hide();
+        $('body').removeClass('oh');
         $('body').removeClass('menu-active menu-activing');
         setTimeout(function() {
           $('#slide-menu').removeClass('db');

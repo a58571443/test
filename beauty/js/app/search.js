@@ -2,10 +2,10 @@ require.config(requireConfig);
 require([
     'jquery',
     'doT',
-    'fly',
     'caculRem',
+    'common'
   ],
-  function(jquery, doT, fly, caculRem) {
+  function(jquery, doT, caculRem, common) {
     var creatPage = {
       _getRequestData: {
         _requestAppData: function() {
@@ -18,29 +18,41 @@ require([
       },
       //页面事件
       addEvent: function() {
-        if (!!localStorage.getItem('searchHstory')) {
-          var arr = JSON.parse(localStorage.getItem('searchHstory'));
-          if (arr && arr.length) {
-            var requestTmpl = doT.template($('#list').text());
-            $('#result').append(requestTmpl(arr));
-          }
-        }
         $('#search').click(function() {
           var val = $('.search-input').val();
           if (val) {
-            var arr = JSON.parse(localStorage.getItem('searchHstory')) || [];
-            arr.push(val);
-            localStorage.setItem('searchHstory', JSON.stringify(val));
+            var para = {
+              url: '/api/search',
+              type: 'get',
+              data: {
+                key: val
+              },
+              success: function(res) {
+                var data = res.message;
+                if (data && data.length) {
+                  var requestTmpl = doT.template($('#searchList').text());
+                  $('#result_ul').html(requestTmpl(data));
+                }
+              }
+            }
+            common.ajax(para);
           }
 
+
+
+
         });
-        $('.clear-history').click(function() {
-          $('#result').empty();
-          localStorage.setItem('searchHstory', '');
-        });
+        // $('.clear-history').click(function() {
+        //   $('#result').empty();
+        //   localStorage.setItem('searchHstory', '');
+        // });
         $('.goBack').click(function() {
           window.history.go(-1);
         });
+        // $(document).off('.go-detail').on('click', '.go-detail', function() {
+        //   var id = $(this).data('id');
+        //   window.location.href = 'detail.html?id=' + id + '&page=1';
+        // });
       },
       initData: function() {
         // creatPage._getRequestData._requestAppData();

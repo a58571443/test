@@ -25,28 +25,28 @@ html {
 }
 @media only screen and (min-width: 481px) {
     html {
-        font-size: 30px !important; 
+        font-size: 30px !important;
     }
 }
 @media only screen and (min-width: 569px) {
     html {
-        font-size: 35px !important; 
+        font-size: 35px !important;
     }
 }
 @media only screen and (min-width: 641px) {
     html {
-        font-size: 40px !important; 
+        font-size: 40px !important;
     }
 }
 @media only screen and (min-width: 720px) {
     html {
-        font-size: 45px !important; 
+        font-size: 45px !important;
     }
 } */
 * {
     -webkit-touch-callout:none;
-    -webkit-user-select:none;
-    user-select:none;
+    /* -webkit-user-select:none; */
+    /* user-select:none; */
 }
 body {
     color: #333;
@@ -97,7 +97,7 @@ html,body {
   display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
   display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6 */
   display: -webkit-flex;     /* NEW - Chrome */
-  
+
 }
 .flex-one {
     flex:1;
@@ -175,7 +175,7 @@ html,body {
     line-height: 1rem !important;
     text-align: center;
     color: #888;
-} 
+}
 .pullDown {
     height: 3.42rem;
 }
@@ -280,17 +280,17 @@ html,body {
     35% { -webkit-transform: rotate(-3deg) translateX(-0.325rem); }
     40% { -webkit-transform: rotate(-2deg) translateX(-0.25rem); }
     45% { -webkit-transform: rotate(-1deg) translateX(-0.125rem); }
-    50% { -webkit-transform: rotate(0deg) translateX(0rem); } 
-    55% { -webkit-transform: rotate(1deg) translateX(0.125rem); } 
-    60% { -webkit-transform: rotate(2deg) translateX(0.25rem); } 
-    65% { -webkit-transform: rotate(3deg) translateX(0.325rem); } 
-    70% { -webkit-transform: rotate(4deg) translateX(0.5rem); } 
-    75% { -webkit-transform: rotate(5deg) translateX(0.725rem); } 
-    80% { -webkit-transform: rotate(4deg) translateX(0.5rem); } 
+    50% { -webkit-transform: rotate(0deg) translateX(0rem); }
+    55% { -webkit-transform: rotate(1deg) translateX(0.125rem); }
+    60% { -webkit-transform: rotate(2deg) translateX(0.25rem); }
+    65% { -webkit-transform: rotate(3deg) translateX(0.325rem); }
+    70% { -webkit-transform: rotate(4deg) translateX(0.5rem); }
+    75% { -webkit-transform: rotate(5deg) translateX(0.725rem); }
+    80% { -webkit-transform: rotate(4deg) translateX(0.5rem); }
     85% { -webkit-transform: rotate(3deg) translateX(0.325rem); }
-    90% { -webkit-transform: rotate(2deg) translateX(0.25rem); } 
-    95% { -webkit-transform: rotate(1deg) translateX(0.125rem); } 
-    100% { -webkit-transform: rotate(0) translateX(0rem); } 
+    90% { -webkit-transform: rotate(2deg) translateX(0.25rem); }
+    95% { -webkit-transform: rotate(1deg) translateX(0.125rem); }
+    100% { -webkit-transform: rotate(0) translateX(0rem); }
 }
 @-webkit-keyframes swinging{
      0% { -webkit-transform: rotate(0)  translateX(0); }
@@ -303,17 +303,17 @@ html,body {
     35% { -webkit-transform: rotate(-3deg) translateX(-0.325rem); }
     40% { -webkit-transform: rotate(-2deg) translateX(-0.25rem); }
     45% { -webkit-transform: rotate(-1deg) translateX(-0.125rem); }
-    50% { -webkit-transform: rotate(0deg) translateX(0rem); } 
-    55% { -webkit-transform: rotate(1deg) translateX(0.125rem); } 
-    60% { -webkit-transform: rotate(2deg) translateX(0.25rem); } 
-    65% { -webkit-transform: rotate(3deg) translateX(0.325rem); } 
-    70% { -webkit-transform: rotate(4deg) translateX(0.5rem); } 
-    75% { -webkit-transform: rotate(5deg) translateX(0.725rem); } 
-    80% { -webkit-transform: rotate(4deg) translateX(0.5rem); } 
+    50% { -webkit-transform: rotate(0deg) translateX(0rem); }
+    55% { -webkit-transform: rotate(1deg) translateX(0.125rem); }
+    60% { -webkit-transform: rotate(2deg) translateX(0.25rem); }
+    65% { -webkit-transform: rotate(3deg) translateX(0.325rem); }
+    70% { -webkit-transform: rotate(4deg) translateX(0.5rem); }
+    75% { -webkit-transform: rotate(5deg) translateX(0.725rem); }
+    80% { -webkit-transform: rotate(4deg) translateX(0.5rem); }
     85% { -webkit-transform: rotate(3deg) translateX(0.325rem); }
-    90% { -webkit-transform: rotate(2deg) translateX(0.25rem); } 
-    95% { -webkit-transform: rotate(1deg) translateX(0.125rem); } 
-    100% { -webkit-transform: rotate(0) translateX(0rem); } 
+    90% { -webkit-transform: rotate(2deg) translateX(0.25rem); }
+    95% { -webkit-transform: rotate(1deg) translateX(0.125rem); }
+    100% { -webkit-transform: rotate(0) translateX(0rem); }
 }
 /*===============================下拉加载样式结束====================================  */
 .no-imformation {

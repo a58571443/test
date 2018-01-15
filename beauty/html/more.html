@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- 添加到主屏幕后，全屏显示 -->
+  <meta name="apple-touch-fullscreen" content="YES" />
+  <meta name="format-detection" content="telephone=no" />
+  <!-- iphone 运行在全屏模式 -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="viewport" />
+  <title>更多</title>
+  <script src="../js/lib/rem-cacul.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/base.css" />
+  <link rel="stylesheet" type="text/css" href="../css/all.css" />
+  <link rel="stylesheet" type="text/css" href="../css/home.css" />
+  <link rel="stylesheet" type="text/css" href="../css/font-awesome/css/font-awesome.min.css" />
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b012a4a1c6ab8a1cdf39161caa099b7c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+  <style media="screen">
+    .pullDown {
+      height: 0;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="more-wrap">
+    <div class="home-header">
+      <a class="back" href="../index.html"><i class="icon-angle-left"></i></a>
+      <span class="site-title">图片网站</span>
+    </div>
+    <div class="more-view" id="wrapper">
+      <div>
+        <ul class="more-ul">
+
+
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+
+<script id="list" type="text/x-dot-template">
+
+    {{ for (var val, i = 0, s = it.length; i
+    < s; i ++) { }} {{ val=it[i]; }}
+    <li class="go-detail search-li" data-id={{=val.id}}>
+      <div>
+        <img src="{{=val.icon_image}}" />
+        <p class="ell">{{=val.title}}</p>
+      </div>
+    </li>
+      {{ } }}
+
+</script>
+
+
+<script src="../js/lib/config.js"></script>
+<script data-main="../js/app/more" src="../js/lib/require.js"></script>
+
+</html>

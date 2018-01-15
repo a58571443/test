@@ -132,7 +132,7 @@
     }
   };
 
-  lazyLoad.init();
+  // lazyLoad.init();
 
   window.lazyLoad = lazyLoad;
 

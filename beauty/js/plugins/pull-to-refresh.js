@@ -59,7 +59,7 @@ var refresher = {
 		lazyLoad.init(pullDownOffset);
 	},
 	scrollIt: function(parameter, pullDownEl, pullDownOffset, pullUpEl, pullUpOffset) {
-		eval(parameter.id + "= new iScroll(parameter.id, {useTransition: true,vScrollbar: false,topOffset: pullDownOffset,noPullDown:parameter.noPullDown||false,onRefresh: function () {refresher.onRelease(pullDownEl,pullUpEl);},onScrollMove: function () {parameter.func();refresher.onScrolling(parameter,this,pullDownEl,pullUpEl,pullUpOffset,pullDownOffset); lazyLoad.init(pullDownOffset,this);},onScrollEnd: function () {parameter.func();refresher.onPulling(pullDownEl,parameter.pullDownAction,pullUpEl,parameter.pullUpAction);lazyLoad.init(pullDownOffset,this);},})");
+		eval(parameter.id + "= new iScroll(parameter.id, {useTransition: true,vScrollbar: false,topOffset: pullDownOffset,noPullDown:parameter.noPullDown||false,onRefresh: function () {refresher.onRelease(pullDownEl,pullUpEl);},onScrollMove: function () {refresher.onScrolling(parameter,this,pullDownEl,pullUpEl,pullUpOffset,pullDownOffset); lazyLoad.init(pullDownOffset,this);},onScrollEnd: function () {refresher.onPulling(pullDownEl,parameter.pullDownAction,pullUpEl,parameter.pullUpAction);lazyLoad.init(pullDownOffset,this);},})");
 		pullDownEl.querySelector('.pullDownLabel').innerHTML = refresher.info.pullDownLable;
 		document.addEventListener('touchmove', function(e) {
 			e.preventDefault();
@@ -174,18 +174,18 @@ var refresher = {
 		};
 	},
 	getElementsClass: function(classnames) {
-		var classobj = new Array(), //定义数组 
-			classint = 0, //定义数组的下标 
-			tags = document.getElementsByTagName("*"); //获取HTML的所有标签 
-		for (var i in tags) { //对标签进行遍历 
-			if (tags[i].nodeType == 1) { //判断节点类型 
-				if (tags[i].getAttribute("class") == classnames) //判断和需要CLASS名字相同的，并组成一个数组 
+		var classobj = new Array(), //定义数组
+			classint = 0, //定义数组的下标
+			tags = document.getElementsByTagName("*"); //获取HTML的所有标签
+		for (var i in tags) { //对标签进行遍历
+			if (tags[i].nodeType == 1) { //判断节点类型
+				if (tags[i].getAttribute("class") == classnames) //判断和需要CLASS名字相同的，并组成一个数组
 				{
 					classobj[classint] = tags[i];
 					classint++;
 				}
 			}
 		}
-		return classobj; //返回组成的数组 
+		return classobj; //返回组成的数组
 	}
 }

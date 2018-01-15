@@ -16,7 +16,7 @@ body {
   box-sizing: border-box;
 }
 
-.list {
+.list, .back {
   /*float: left;*/
   display: inline-block;
   /*vertical-align: middle;*/
@@ -40,6 +40,7 @@ body {
 
 #slide-menu {
   display: none;
+  overflow: hidden;
   width: 70%;
   height: 100%;
   position: fixed;
@@ -136,19 +137,19 @@ body.menu-active #page {
 .section-picture-list ul li {
   display: inline-block;
   width: 50%;
-  height: 5rem;
+  /* height: 5rem; */
   padding: 0 .2rem;
   box-sizing: border-box;
 }
 
 .section-picture-list ul li p {
   font-size: .55rem;
-  line-height: 2rem;
+  margin: .5rem 0;
 }
 
 .section-picture-list ul li img {
   width: 100%;
-  height: 100%;
+  height: 5rem;
 }
 
 #wrapper {
@@ -240,4 +241,63 @@ body.menu-active #page {
   position: absolute;
   top: 1.5rem;
   left: 1rem;
+}
+
+.main-container {
+  margin-top: .5rem;
+}
+
+.main-container section {
+  background: #fff;
+  margin-bottom: .5rem;
+}
+
+.more-ul li p {
+  margin-left: .5rem;
+  font-size: .8rem;
+  line-height: 2rem;
+}
+
+.more-ul li {
+  padding: .5rem 0;
+  background: #fff;
+  margin-bottom: .5rem;
+}
+
+.more-ul {
+  margin-top: .5rem;
+}
+
+.more-ul li img {
+  width: 100%;
+  height: 10rem;
+}
+
+.more-wrap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.more-view {
+  background: #F1F1F1;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  top: 2.1rem;
+  overflow: auto;
+}
+
+.blank {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 99999;
+  display: none;
+}
+.view-window {
+  font-size: 0;
 }

@@ -1,271 +1,3 @@
-/*===================首页start============================*/
-
-.home-wrap {
-  /*position: relative;*/
-  width: 100%;
-  height: 100%;
-}
-
-.home-wrap .slider {
-  margin: 0 auto;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  z-index: 99;
-}
-
-.home-wrap .slider ul {
-  display: block;
-  position: absolute;
-  left: 0;
-  width: 100%;
-}
-
-.home-wrap .slider ul li {
-  position: relative;
-  float: left;
-  overflow: hidden;
-  width: 100%;
-}
-
-.home-wrap .slider ul li img {
-  display: block;
-  width: 100%;
-  height: 6.9rem;
-}
-
-.slider .focus {
-  position: absolute;
-  left: 0;
-  z-index: 999;
-  bottom: 0.3rem;
-  width: 100%;
-}
-
-.slider .focus-inner {
-  /*width: 98%;*/
-  text-align: center;
-}
-
-.slider .focus span {
-  display: inline-block;
-  margin-left: 0.27rem;
-  width: 1.5vw;
-  height: 1.5vw;
-  border-radius: 50%;
-  background: #fff;
-  opacity: 0.5;
-}
-
-.slider .focus span.current {
-  opacity: 1;
-  background: #49C887;
-}
-
-.home-view {
-  width: 100%;
-  height: 100%;
-  /* position: absolute; */
-  /* overflow: auto; */
-  /*position: absolute;
-  top: 0;
-  bottom: 0;*/
-  overflow: auto;
-  padding-top: 1.96rem;
-}
-
-.home-app-holder {
-  display: -webkit-box;
-  /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
-  display: -webkit-flex;
-  /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
-  display: flex;
-  /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
-  background-color: #fff;
-}
-
-.home-app-holder a {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-  display: block;
-  text-align: center;
-  display: block;
-  /*border: solid #F3F3F3;
-    border-width: 0 1px 1px 0;*/
-}
-
-/*.home-app-enterance ul li a{
-    display: box;
-    display: -webkit-box;
-    display: block;
-    text-align: center;
-    display: block;
-    border: solid #F3F3F3;
-    border-width: 0 1px 1px 0;
-}
-*/
-
-.home-app-holder a img {
-  width: 2rem;
-  vertical-align: middle;
-}
-
-.home-app-holder a p {
-  /*margin-bottom: 1rem;*/
-  font-size: 0.58rem;
-  line-height: 1.78rem;
-  color: #333333;
-}
-
-.home-app-img {
-  padding-top: 0.76rem;
-}
-
-.home-img-holder {
-  height: 100%;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.home-text-content {
-  display: block;
-  padding-top: 1.18rem;
-  text-align: center;
-}
-
-.home-text-content h1 {
-  font-size: 1rem;
-  color: #FFC73A;
-  line-height: 1.51rem;
-  font-weight: bold;
-}
-
-.home-easy {
-  font-size: 0.67rem;
-  color: #666666;
-  line-height: 1.18rem;
-  background: url(../images/home/arrow-right.png) no-repeat right;
-  background-size: 0.36rem;
-  background-position-y: 50%;
-  background-position-x: 93%;
-}
-
-.home-description {
-  font-size: 0.67rem;
-  color: #F7A900;
-  line-height: 1.91rem;
-  border-top: 1px solid #EEEEEE;
-  margin: 0 3.11rem 0 3.11rem;
-}
-
-.home-wrap .app-slider {
-  margin: 0 auto;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  z-index: 99;
-}
-
-.home-wrap .app-slider ul {
-  display: block;
-  position: absolute;
-  left: 0;
-  width: 100%;
-}
-
-.home-wrap .app-slider ul li {
-  position: relative;
-  float: left;
-  overflow: hidden;
-  width: 100%;
-}
-
-.dot {
-  left: 0;
-  z-index: 999;
-  width: 100%;
-}
-
-.dot-inner {
-  width: 98%;
-  text-align: center;
-}
-
-.dot span {
-  display: inline-block;
-  margin-left: 0.42rem;
-  width: 1.5vw;
-  height: 1.5vw;
-  border-radius: 50%;
-  background: #fff;
-  opacity: 0.5;
-}
-
-.dot span.now {
-  opacity: 1;
-  background: #23bff4;
-}
-
-.app-append {
-  list-style: none;
-}
-
-.header-left, .header-right, .reserach {
-  display: inline-block;
-}
-
-.header-left {
-  padding-left: 0.69rem;
-}
-
-.header-right img {
-  width: 0.9rem;
-}
-
-.home-header {
-  position: fixed;
-  height: 1.96rem;
-  /*top: 0;*/
-  z-index: 999;
-  width: 100%;
-  background: url(../images/home/blank.png) no-repeat;
-  background-size: 100% 100%;
-  /*background: red;*/
-  /*opacity: 0;*/
-}
-
-.header-left span {
-  font-size: 0.71rem;
-  color: #FFF;
-  display: inline-block;
-}
-
-.location {
-  padding-right: .6rem;
-  background: url(../images/home/down-arrow.png) no-repeat;
-  background-position: 100% 50%;
-  background-size: 0.38rem;
-  line-height: 1.96rem;
-}
-
-.concern {
-  width: 2.33rem;
-  margin-left: 0.56rem;
-  text-align: center;
-  border: 1px solid #fff;
-  border-radius: 12px;
-  line-height: 0.91rem;
-}
-
-.home-header img {
-  vertical-align: middle;
-}
-
-.header-right {
-  margin-left: 32%;
-}
-
 .header-left img {
   width: 0.38rem;
 }
@@ -404,7 +136,7 @@
 .daily-item {
   width: 7.1rem;
   height: 4.05rem;
-  -webkit-user-select: none;
+  /* -webkit-user-select: none; */
 }
 
 .daily-date {
@@ -747,7 +479,7 @@
 }
 
 .search-input {
-  width: 80%;
+  width: 75%;
   border: 0;
   outline: 0;
   background: url(../images/home/search.png) no-repeat;
@@ -766,9 +498,12 @@
   display: inline-block;
   vertical-align: middle;
   background-position: 8% 50%;
+  -webkit-user-select: auto;
+  user-select: auto;
 }
 
 .search-footer {
+  text-align: center;
   position: absolute;
   bottom: 0;
   border-top: 1px solid #D8D8D8;
@@ -805,4 +540,77 @@
   line-height: 2rem;
   background: url(../images/common/icon-more.png) no-repeat;
   background-position: 98% 50%;
+  padding: .3rem 0;
+}
+
+.search-li img {
+  width: 4rem;
+  height: 3rem;
+  margin-right: .4rem;
+}
+
+.search-li p {
+  font-size: .67rem;
+}
+
+.mint-indicator {
+  -webkit-transition: opacity .2s linear;
+  transition: opacity .2s linear;
+}
+
+.mint-indicator-wrapper {
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, .7);
+  color: #fff;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.mint-indicator-mask {
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: transparent;
+}
+
+.mint-indicator-spin {
+  display: inline-block;
+  text-align: center;
+}
+
+.mint-spinner-snake {
+  -webkit-animation: mint-spinner-rotate .8s infinite linear;
+  animation: mint-spinner-rotate .8s infinite linear;
+  border: 4px solid transparent;
+  border-radius: 50%;
+}
+
+@-webkit-keyframes mint-spinner-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mint-spinner-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

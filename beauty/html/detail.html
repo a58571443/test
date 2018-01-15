@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="viewport" />
-  <title>首页</title>
+  <title>详情</title>
   <script src="../js/lib/rem-cacul.js"></script>
   <link rel="stylesheet" type="text/css" href="../css/base.css" />
   <link rel="stylesheet" type="text/css" href="../css/all.css" />
@@ -29,59 +29,30 @@
 </head>
 
 <body>
-  <nav id="slide-menu">
-    <article>
-      <h3>美女图片</h3>
-      <ul>
-        <li class="active"><a href="../index.html?type=1">首页</a></li>
-        <li><a href="../index.html?type=2">性感美女</a></li>
-        <li><a href="../index.html?type=3">清纯美女</a></li>
-        <li><a href="../index.html?type=4">大学校花</a></li>
-        <li><a href="../index.html?type=5">性感车模</a></li>
-        <li><a href="../index.html?type=6">明星写真</a></li>
-      </ul>
-    </article>
-  </nav>
   <div class="home-wrap" id="page">
     <div class="home-header">
-      <a class="list" href="javascript:void(0)"><i class="icon-list-ul"></i></a>
-      <span class="site-title">图片网站</span>
+      <a class="back" href="javascript:window.history.go(-1);"><i class="icon-angle-left"></i></a>
+      <a class="site-title" href="../index.html">尤美网</a>
       <a class="search" href='search.html'><i class="icon-search"></i></a>
     </div>
     <div class="home-view" id="wrapper">
       <div class="picture-detail view-window">
-        <div class="info-header">
-          <h2>美腿尤物尹菲诱惑丝臀吸引你眼球</h2>
-          <p class="update-time"><span>2018-01-05 20:34:53</span></p>
+        <div id="info" class="clearfix">
+
         </div>
-        <div class="pic-holder">
-          <img src="http://hd.gqtp.com/Upload/20180105/detail_5a4f47ceec3d0.jpg">
-        </div>
+
         <div class="pager">
           <button type="button" class="preview-page">上一页</button>
-          <span class="currentPage"><span id="current">1</span id="all">/46页</span>
+          <span class="currentPage"><span id="current">1</span>/<span id="all">1</span>页</span>
           <button type="button" class="next-page">下一页</button>
         </div>
       </div>
     </div>
     <div class="recommend">
       <h2>网友正在看</h2>
-      <ul>
-        <li>
-          <a href="javascript:void(0)">SM女王尤妮丝情趣制服等你来调教</a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">SM女王尤妮丝情趣制服等你来调教</a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">SM女王尤妮丝情趣制服等你来调教</a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">SM女王尤妮丝情趣制服等你来调教</a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">SM女王尤妮丝情趣制服等你来调教</a>
-        </li>
+      <ul id="recommend">
+
+
       </ul>
     </div>
     <footer class="companyInfo">
@@ -90,6 +61,32 @@
     </footer>
   </div>
 </body>
+
+<script id="nav" type="text/x-dot-template">
+  {{ for (var val, i = 0, s = it.length; i
+  < s; i ++) { }} {{ val=it[i]; }}
+  <li>
+    <a href="detail.html?page=1&id={{=val.id}}">{{=val.title}}</a>
+  </li>
+      {{ } }}
+</script>
+
+<script id="list" type="text/x-dot-template">
+  <div class="info-header">
+    <h2>{{=it.title}}</h2>
+  </div>
+  <div class="pic-holder">
+    <img src="{{=it.image_url}}">
+  </div>
+  <ul class="keywords">
+  {{ for (var val, i = 0, s = it.keywords.length; i
+  < s; i ++) { }} {{ val=it.keywords[i]; }}
+  <li>{{=val.name}}</li>
+      {{ } }}
+  </ul>
+</script>
+
+
 <script src="../js/lib/config.js"></script>
 <script data-main="../js/app/detail" src="../js/lib/require.js"></script>
 

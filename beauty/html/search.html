@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <meta name="viewport" />
-  <title></title>
+  <title>搜索</title>
   <script src="../js/lib/rem-cacul.js"></script>
   <link rel="stylesheet" type="text/css" href="../css/base.css" />
   <link rel="stylesheet" type="text/css" href="../css/all.css" />
@@ -33,12 +33,12 @@
       <button type="button" id="search">搜索</button>
     </div>
     <div class="result">
-      <ul id="result">
+      <ul id="result_ul">
 
       </ul>
     </div>
     <div class="search-footer">
-      <span class="clear-history">清空历史</span>
+      <!-- <span class="clear-history">清空历史</span> -->
       <span class="goBack">取消</span>
     </div>
   </div>
@@ -47,6 +47,19 @@
   {{ for (var val, i = 0, s = it.length; i
   < s; i ++) { }} {{ val=it[i]; }}
     <li>{{=val}}</li>
+  {{ } }}
+</script>
+
+
+<script id="searchList" type="text/x-dot-template">
+  {{ for (var val, i = 0, s = it.length; i
+  < s; i ++) { }} {{ val=it[i]; }}
+    <li class="go-detail search-li" data-id={{=val.id}}>
+    <a class="flex" href="detail.html?id={{=val.id}}&page=1">
+    <img src="{{=val.icon_image}}"/>
+    <p class="ell">{{=val.title}}</p>
+    </a>
+    </li>
   {{ } }}
 </script>
 <script src="../js/lib/config.js"></script>

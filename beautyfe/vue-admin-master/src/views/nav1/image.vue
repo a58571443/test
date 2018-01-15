@@ -63,11 +63,26 @@
     </el-table-column>
     <el-table-column prop="create_time" label="创建时间" sortable>
     </el-table-column>
+    <el-table-column prop="title" label="帖子名称" sortable>
+    </el-table-column>
+    <!-- <el-table-column prop="posts_id" label="帖子" sortable>
+      <template slot-scope="scope">
+           <el-select v-model="scope.row.posts_name" placeholder="请选择" @visible-change="isVisible($event)" @change="handleEditCategory($event,scope.$index, scope.row)">
+            <el-option
+              v-for="item in articles"
+              :key="item.value"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+       </template>
+    </el-table-column> -->
     <el-table-column label="操作" class="td">
       <template scope="scope">
           <div class="btns">
             <el-button class="td-btn" type="primary" size="small" @click="handleJudge(scope.$index, scope.row)">审核</el-button>
   					<el-button class="td-btn" type="danger" size="small" @click="handleKeyword(scope.$index, scope.row)">编辑图片关键字</el-button>
+            <el-button type="warning" @click.native="addArticle(scope.$index, scope.row)">添加帖子</el-button>
           </div>
 					<!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
 
@@ -97,11 +112,6 @@
 
   <!--新增界面-->
   <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
-    <!--<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-      <el-form-item label="标签" prop="name">
-        <el-input v-model="addForm.name" auto-complete="off"></el-input>
-      </el-form-item>
-    </el-form>-->
     <el-upload class="upload-demo" action="//47.97.167.88/image/upload" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" :on-success="fileSuccess" list-type="picture">
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -175,6 +185,66 @@
       <el-button type="primary" @click.native="previewVisible = false">确定</el-button>
     </div>
   </el-dialog>
+
+  <!--编辑帖子图片-->
+  <el-dialog title="编辑" v-model="imgsFormVisible" :close-on-click-modal="false">
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+      <el-form :inline="true" :model="filters">
+        <el-form-item>
+          <el-select v-model="filters.categoryId" placeholder="请选择类别" @change="changeAList">
+            <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-input placeholder="关键字" v-model="filter.key"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-select v-model="filters.keywordId" placeholder="请选择关键字" @change="changeKeyword">
+            <el-option v-for="item in keywords" :key="item.value" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" v-on:click="getArticle">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
+    <el-table :data="lists" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+      <el-table-column prop="title" label="帖子名称" sortable>
+      </el-table-column>
+      <el-table-column prop="title" label="关键字" sortable>
+        <template slot-scope="scope">
+         <ul v-for="(item,index) in scope.row.keyword">
+            <li class="keyword-li">
+              <p>{{item.name}}</p>
+            </li>
+         </ul>
+      </template>
+      </el-table-column>
+      <el-table-column prop="icon_image" label="封面图片" sortable>
+        <template slot-scope="scope">
+          <img class="preview-img"  v-if="scope.row.icon_image" v-model="scope.row.icon_image.ref_url" :src="scope.row.icon_image.ref_url" @click="preview(scope.row.icon_image.ref_url)">
+         </template>
+      </el-table-column>
+      <el-table-column label="操作" class="td">
+        <template scope="scope">
+           <div class="btns">
+             <el-button class="td-btn" type="primary" size="small" @click="addToArticle(scope.$index, scope.row)">添加到该帖子</el-button>
+           </div>
+          <!-- <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-col :span="24" class="toolbar">
+      <el-pagination layout="prev, pager, next" @current-change="handleImgCurrentChange" :page-size="20" :total="Atotal" style="float:right;">
+      </el-pagination>
+    </el-col>
+    <div slot="footer" class="dialog-footer">
+      <!-- <el-button @click.native="this.imgsFormVisible=false">确定</el-button> -->
+      <!-- <el-button type="primary" @click.native="addToArticle">添加图片</el-button> -->
+    </div>
+  </el-dialog>
 </section>
 </template>
 
@@ -186,10 +256,12 @@ import {
   getUserListPage,
   updateImgCat,
   judgeImg,
+  bindPosts,
   delImgKeywords,
   getkeywordList,
   addImgKeywords,
   editUser,
+  getpostsList,
   addUser
 } from '../../api/api';
 
@@ -200,7 +272,13 @@ export default {
         key: '',
         categoryId: '',
       },
+      filter: {
+        key: '',
+        categoryId: '',
+        keywordId: ''
+      },
       keywords: [],
+      articles: [],
       keyword: [],
       flag: false,
       label: '',
@@ -208,10 +286,14 @@ export default {
       keywordFormVisible: false,
       addKeywordFormVisible: false,
       previewVisible: false,
+      imgsFormVisible: false,
       fileList: [],
       options: [],
       users: [],
+      lists: [],
       total: 0,
+      Atotal: 0,
+      Apage: 1,
       page: 1,
       judgeFormVisible: false,
       listLoading: false,
@@ -255,6 +337,9 @@ export default {
       addKeywordForm: {
         id: '',
         keywordId: ''
+      },
+      articleForm: {
+        id: ''
       }
     }
   },
@@ -283,6 +368,10 @@ export default {
       this.page = val;
       this.getUsers();
     },
+    handleImgCurrentChange(val) {
+      this.Apage = val;
+      this.getArticle();
+    },
     handleKeyword: function(index, row) {
       this.keywordFormVisible = true;
       // this.keywordForm.keyword = this.keyword;
@@ -294,12 +383,31 @@ export default {
     },
     changeList(val) {
       this.filters.categoryId = val;
-      console.log(val);
+    },
+    changeAList(val) {
+      this.filter.categoryId = val;
+    },
+    changeKeyword(val) {
+      this.filter.keywordId = val;
     },
     fileSubmit(val) {
       this.addFormVisible = false;
       this.fileList = [];
       this.getUsers();
+    },
+    getArticle() {
+      let para = {
+        page: this.Apage,
+        categoryId: this.filter.categoryId,
+        key: this.filter.key,
+        keywordId: this.filter.keywordId
+      };
+      //NProgress.start();
+      getpostsList(para).then((res) => {
+        this.Atotal = parseInt(res.data.message.total);
+        this.lists = res.data.message.data;
+        //NProgress.done();
+      });
     },
     //获取用户列表
     getUsers() {
@@ -315,6 +423,29 @@ export default {
         this.users = res.data.message.data;
         this.listLoading = false;
         //NProgress.done();
+      });
+    },
+    addArticle: function(index, row) {
+      this.imgsFormVisible = true;
+
+      this.articleForm.id = row.id;
+      this.getArticle();
+    },
+    addToArticle: function(index, row) {
+      let para = {
+        id: this.articleForm.id,
+        postsId: row.id
+      }
+
+      bindPosts(para).then((res) => {
+        // this.addKeywordFormVisible = false;
+        // this.keyword.push(obj);
+        //NProgress.done();
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+        // this.getUsers();
       });
     },
     fileSuccess: function() {
