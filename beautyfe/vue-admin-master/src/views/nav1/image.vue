@@ -10,7 +10,7 @@
 					<el-button type="primary" v-on:click="getUsers">查询</el-button>
 				</el-form-item>-->
       <el-form-item>
-        <el-select v-model="filters.categoryId" placeholder="请选择" @change="changeList">
+        <el-select v-model="filters.categoryId" placeholder="请选择类别" @change="changeList">
           <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.id">
           </el-option>
         </el-select>
@@ -458,6 +458,11 @@ export default {
       getUserListPage().then((res) => {
         //this.total = res.data.total;
         this.options = res.data.message;
+        var all = {
+          id: '',
+          name: '所有'
+        };
+        this.options.unshift(all);
         this.listLoading = false;
         this.flag = false;
         //NProgress.done();

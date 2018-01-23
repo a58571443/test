@@ -88,7 +88,8 @@
 
 <script id="container" type="text/x-dot-template">
   {{ for (var val, i = 0, s = it.length; i
-  < s; i ++) { }} {{ val=it[i]; }} {{if(i!=1){ }} <section>
+  < s; i ++) { }} {{ val=it[i]; }}
+  <section>
     <div class="section-info clearfix">
       <h1 class="section-title">{{=val.category.name}}</h1>
       <button type="button" class="see-more" data-id={{=val.category.id}} data-name={{=val.category.name}}>更多</button>
@@ -105,36 +106,7 @@
       </ul>
     </div>
     </section>
-    {{ }else{ }}
-    <section>
-      <div class="section-info clearfix">
-        <h1 class="section-title">{{=val.category.name}}</h1>
-        <button type="button" class="see-more" data-id={{=val.category.id}} data-name={{=val.category.name}}>更多</button>
-      </div>
-      <div class="hot-item">
-        <div class="hot-left">
-          {{ for (var value, j = 0, l = val.posts.length; j
-          < l; j ++) { }} {{ value=val.posts[j]; }} {{if(j<=3){ }} <div class="letf-item">
-            <a href="html/detail.html?id={{=value.id}}&page=1" data-id={{=value.id}} class="go-detail">
-              <img data-src="{{=value.icon_image}}">
-              <span>{{=value.title}}</span>
-            </a>
-        </div>
-        {{ } }} {{ } }}
-        <div class="hot-right">
-          {{ for (var value, j = 0, l = val.posts.length; j
-          < l; j ++) { }} {{ value=val.posts[j]; }} {{if(j>3){ }}
-            <div class="right-item">
-              <a href="html/detail.html?id={{=value.id}}&page=1" data-id={{=value.id}} class="go-detail">
-              <img data-src="{{=value.icon_image}}">
-              <span>{{=value.title}}</span>
-            </a>
-            </div>
-            {{ } }} {{ } }}
-        </div>
-      </div>
-    </section>
-    {{ } }} {{ } }}
+    {{ } }}
 </script>
 <script src="js/lib/config.js"></script>
 <script data-main="js/app/home" src="js/lib/require.js"></script>

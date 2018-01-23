@@ -37,7 +37,7 @@ require([
               var categoryData = res.message.categoryData;
               var requestTmplpic = doT.template($('#container').text());
               $('.main-container').append(requestTmplpic(categoryData));
-              window.lazyLoad.init();
+              window.lazyLoad.init(window.screen.availHeight);
               $('.mint-indicator').hide();
             }
           }
@@ -46,20 +46,15 @@ require([
       },
       //页面事件
       addEvent: function() {
-
         common.navSilde();
-        // $(document).off('.go-detail').on('click', '.go-detail', function() {
-        //   var id = $(this).data('id');
-        //   window.location.href = 'html/detail.html?id=' + id + '&page=1';
-        // });
-
         $(document).off('.see-more').on('click', '.see-more', function() {
           var id = $(this).data('id');
           var name = $(this).data('name');
           window.location.href = 'html/more.html?id=' + id + '&name=' + name;
         });
-
-
+        document.onscroll = function() {
+          window.lazyLoad.init(window.screen.availHeight);
+        }
       },
       initData: function() {
         creatPage._getRequestData._requestPicData();

@@ -6,34 +6,53 @@
  */
 var BASEURL = '//47.97.167.88:8080';
 define(function(require) {
-  var common = {
-    ajax: function(val) {
-      $.ajax({
-        url: BASEURL + val.url,
-        dataType: 'json',
-        type: val.type,
-        data: val.data || '',
-        success: val.success || ''
+  var Toast = function(config) {
+    this.context = config.context == null ? $('body') : config.context; // 上下文
+    this.message = config.message; // 显示内容
+    this.time = config.time == null ? 3000 : config.time; // 持续时间
+    this.left = config.left; // 距容器左边的距离
+    this.top = config.top; // 距容器上方的距离
+    this.init();
+  }
+  var msgEntity;
+
+  Toast.prototype = {
+
+    // 初始化显示的位置内容等
+    init: function() {
+      $("#toastMessage").remove();
+
+      // 设置消息体
+      var msgDIV = new Array();
+      msgDIV.push('<div id="toastMessage" class="toast">');
+      msgDIV.push('<span>' + this.message + '</span>');
+      msgDIV.push('</div>');
+      msgEntity = $(msgDIV.join('')).appendTo(this.context);
+
+      var left = this.left == null ? this.context.width() / 2 - msgEntity.width() / 2 : this.left,
+        top = this.top == null ? $(window).height() / 2 - msgEntity.find('span').height() / 2 : this.top;
+      msgEntity.css({
+        top: top,
+        left: left
       });
     },
+    //显示动画
+    show: function() {
+      msgEntity.fadeIn();
+      setTimeout(function() {
+        msgEntity.fadeOut(1000);
+      }, 1000);
+    }
+  };
+
+  var common = {
+    toast: function(msg, opt, left, top) {
+      new Toast({
+        context: $('body'),
+        message: msg
+      }, opt, left, top).show();
+    },
     navSilde: function() {
-      var type = common.getQueryString(location.href).type;
-      if (type) {
-        switch (parseInt(type)) {
-          case 1:
-            $('#slide-menu li').eq(0).siblings().removeClass('active');
-            $('#slide-menu li').eq(0).addClass('active');
-            break;
-          case 2:
-            $('#slide-menu li').eq(1).siblings().removeClass('active');
-            $('#slide-menu li').eq(1).addClass('active');
-            break;
-          default:
-            $('#slide-menu li').eq(0).siblings().removeClass('active');
-            $('#slide-menu li').eq(0).addClass('active');
-            break;
-        }
-      }
       $('.list').click(function(e) {
         $('body').addClass('menu-active menu-activing');
         $('#slide-menu').addClass('db');
@@ -54,6 +73,17 @@ define(function(require) {
 
       })
     },
+    // js仿照安卓toast弹框实现
+    ajax: function(val) {
+      $.ajax({
+        url: BASEURL + val.url,
+        dataType: 'json',
+        type: val.type,
+        data: val.data || '',
+        success: val.success || ''
+      });
+    },
+
     isArray: function(o) {
       return Object.prototype.toString.call(o) === '[object Array]';
     },

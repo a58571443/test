@@ -36,6 +36,9 @@
       <ul id="result_ul">
 
       </ul>
+      <ul id="recommend_ul">
+
+      </ul>
     </div>
     <div class="search-footer">
       <!-- <span class="clear-history">清空历史</span> -->
@@ -50,6 +53,12 @@
   {{ } }}
 </script>
 
+<script id="keywords" type="text/x-dot-template">
+  {{ for (var val, i = 0, s = it.length; i
+  < s; i ++) { }} {{ val=it[i]; }}
+    <li>{{=val.name}}</li>
+  {{ } }}
+</script>
 
 <script id="searchList" type="text/x-dot-template">
   {{ for (var val, i = 0, s = it.length; i

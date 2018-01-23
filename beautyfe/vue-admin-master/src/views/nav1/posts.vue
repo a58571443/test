@@ -419,12 +419,22 @@ export default {
       getUserListPage().then((res) => {
         //this.total = res.data.total;
         this.options = res.data.message;
+        var all = {
+          id: '',
+          name: '所有'
+        };
+        this.options.unshift(all);
         this.listLoading = false;
         //NProgress.done();
       });
       getkeywordList().then((res) => {
         //this.total = res.data.total;
         this.keywords = res.data.message;
+        var all = {
+          id: '',
+          name: '所有'
+        };
+        this.keywords.unshift(all);
         // this.listLoading = false;
         //NProgress.done();
       });

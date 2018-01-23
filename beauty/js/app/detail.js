@@ -26,6 +26,7 @@ require([
               $('#info').append(requestTmpl(data));
               $('#current').html(params.page);
               $('#all').html(data.total);
+              $('.mint-indicator').hide();
               if (params.page <= 1) {
                 $('.preview-page').hide()
               } else {
@@ -75,7 +76,7 @@ require([
       },
       //页面事件
       addEvent: function() {
-        common.navSilde();
+        // common.navSilde();
 
       },
       initData: function() {

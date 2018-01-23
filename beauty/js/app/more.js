@@ -61,7 +61,7 @@ require([
       },
       //页面事件
       addEvent: function() {
-        common.navSilde();
+        // common.navSilde();
         creatPage._getRequestData._pulltoDo();
         $(document).off('.go-detail').on('click', '.go-detail', function() {
           var id = $(this).data('id');

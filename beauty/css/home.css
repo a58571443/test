@@ -4,7 +4,7 @@ body {
 
 .swiper-wrapper img {
   width: 100%;
-  height: 8rem;
+  height: 12rem;
 }
 
 .home-header {
@@ -140,6 +140,7 @@ body.menu-active #page {
   /* height: 5rem; */
   padding: 0 .2rem;
   box-sizing: border-box;
+  vertical-align: middle;
 }
 
 .section-picture-list ul li p {
@@ -149,7 +150,7 @@ body.menu-active #page {
 
 .section-picture-list ul li img {
   width: 100%;
-  height: 5rem;
+  /* height: 8rem; */
 }
 
 #wrapper {
@@ -270,7 +271,7 @@ body.menu-active #page {
 
 .more-ul li img {
   width: 100%;
-  height: 10rem;
+  /* height: 10rem; */
 }
 
 .more-wrap {
@@ -300,4 +301,7 @@ body.menu-active #page {
 }
 .view-window {
   font-size: 0;
+}
+.site-title .icon-home {
+  margin-left: 5px;
 }
